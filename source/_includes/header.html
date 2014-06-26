@@ -17,6 +17,12 @@
 </ul>
 <div class="clear"></div>
 <ul id="nav">
+  {% if page.current == 'about' %}
+    <li> <a href="{{ root_url }}/about" class="current">about</a> </li>
+  {% else %}
+    <li> <a href="{{ root_url }}/about">about</a> </li>
+  {% endif %}
+
   {% if page.current == 'blog' %}
     <li> <a href="{{ root_url }}/" class="current">blog</a> </li>
   {% else %}
