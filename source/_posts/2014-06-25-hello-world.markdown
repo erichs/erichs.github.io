@@ -5,4 +5,8 @@ date: 2014-06-25 22:30:30 -0400
 comments: true
 categories: Musings
 ---
-hello!
+{% highlight ruby %}
+cats.each do |cat|
+  cat.kill if cat.curious?
+end
+{% endhighlight %}
