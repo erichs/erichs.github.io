@@ -2,45 +2,23 @@
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   
-  
   <url>
-    <loc>http://erichs.github.io/404.html</loc>
-    <lastmod>2014-06-25T22:21:13-04:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <loc>http://erichs.github.io/blog/2014/06/25/hello-world/</loc>
+    <lastmod>2014-06-25T22:30:30-04:00</lastmod>
+    <priority>0.8</priority>
   </url>
   
-  <url>
-    <loc>http://erichs.github.io/archives/</loc>
-    <lastmod>2014-06-25T22:21:13-04:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  
-  <url>
-    <loc>http://erichs.github.io/</loc>
-    <lastmod>2014-06-25T22:21:13-04:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
   
   <url>
     <loc>http://erichs.github.io/blog/archives/</loc>
-    <lastmod>2014-06-25T22:21:13-04:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  
-  <url>
-    <loc>http://erichs.github.io/blog/</loc>
-    <lastmod>2014-06-25T22:21:13-04:00</lastmod>
+    <lastmod>2014-06-25T22:48:36-04:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://erichs.github.io/</loc>
-    <lastmod>2014-06-25T22:21:13-04:00</lastmod>
+    <lastmod>2014-06-25T22:48:36-04:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
