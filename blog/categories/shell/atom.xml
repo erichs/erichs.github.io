@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: shell | Terminal Curiosity]]></title>
+  <link href="http://erichs.github.io/blog/categories/shell/atom.xml" rel="self"/>
+  <link href="http://erichs.github.io/"/>
+  <updated>2014-06-27T12:44:10-04:00</updated>
+  <id>http://erichs.github.io/</id>
+  <author>
+    <name><![CDATA[Erich Smith]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Curious Case of the Disappearing Cats]]></title>
+    <link href="http://erichs.github.io/blog/2014/06/27/curious-case-of-the-disappearing-cats/"/>
+    <updated>2014-06-27T11:02:58-04:00</updated>
+    <id>http://erichs.github.io/blog/2014/06/27/curious-case-of-the-disappearing-cats</id>
+    <content type="html"><![CDATA[<p>As any Unix veteran will tell you, the <code>cat</code> utility is much abused. Here&rsquo;s the common scenario:</p>
+
+<p><code>bash Useless Use of Cat
+cat myfile | grep mypattern
+</code></p>
+
+<p>Of course, this kind of abuse isn&rsquo;t limited to the &ldquo;pipe to grep&rdquo; variety. Here&rsquo;s the general form:</p>
+
+<p><code>bash It's not good for my... idiom.
+cat &lt;file&gt; | &lt;command&gt; arg1 arg2 argN
+</code></p>
+
+<p>Indeed, flaming other Unix users for the <a href="http://en.wikipedia.org/wiki/Cat_(Unix)#Useless_use_of_cat">Useless Use of Cat</a> has long been the &lsquo;national sport&rsquo; of the Unix tribe, since Usenet days.</p>
+
+<h1>What&rsquo;s wrong with this pattern?</h1>
+
+<p>One thing, certainly. Two things, probably.</p>
+
+<h2>1. <code>cat</code> is meant to concatenate two or more files together</h2>
+
+<p>If you are using <code>cat</code> with only one filename argument, then by definition you aren&rsquo;t concatenating anything.</p>
+
+<p>So, here&rsquo;s the proper use of <code>cat</code>:</p>
+
+<p><code>bash meow
+cat blacklion.txt greenlion.txt redlion.txt bluelion.txt yellowlion.txt &gt; VOLTRON.txt
+</code></p>
+
+<h2>2. many commands accept STDIN, but prefer a filename argument</h2>
+
+<p>This falls into the larger anti-pattern of &ldquo;Useless Use of Pipe&rdquo;. Instead of:</p>
+
+<p><code>bash Useless Use of Pipe
+cat internet_memes.txt | grep -i "chuck norris"
+</code></p>
+
+<p>Consider:</p>
+
+<p><code>bash He doesn't sleep, he waits...
+grep -i "chuck norris" internet_memes.txt
+</code></p>
+
+<h1>Why is this such a common anti-pattern?</h1>
+
+<p>I still find myself occasionally falling into this pattern, despite two decades' worth of keyboard time on Unix variants. I think this habit likely persists for two reasons:</p>
+
+<h2>1. The habit is learned early</h2>
+
+<p>Early bad habits are often hard to break. One of the first things a CLI user wants to do is to read a file, and until the use of pager commands becomes second nature, this will likely lead to:</p>
+
+<p><code>bash
+cat somefile
+</code></p>
+
+<p>For small ASCII files, this may even be an appropriate use of <code>cat</code>. Usually though, this early habit leads to a second, more subtle, and persistent mental model.</p>
+
+<h2>2. <code>cat</code> is a conceptual pipeline source</h2>
+
+<p>When building up a complex filter, often <code>cat</code> starts things off:</p>
+
+<p><code>bash
+cat myfile | grep pattern | tr 'A-Z' 'a-z' &gt; outfile
+</code></p>
+
+<p>The thought process behind this command is: start with some text, then filter it thus, and filter it so, then write it to an output file. Simple. In some cases, I even give myself a pass on this if it makes my intention clearer. Usually, though, I try to fix the habit.</p>
+
+<h1>The Fix?</h1>
+
+<p>Refactoring. No, really. More on this soon.</p>
+
+<h1>Bonus: Useless use of <code>wc</code></h1>
+
+<p>Often I will do the following to get a matching pattern count:</p>
+
+<p><code>bash
+cat file1 file2 | grep pattern | wc -l
+</code></p>
+
+<p>So, first let&rsquo;s clean up the UUoP:</p>
+
+<p><code>bash
+grep pattern file1 file2 | wc -l
+</code></p>
+
+<p>Turns out, <code>grep</code> has a <code>-c</code> flag, which display the count of matched lines, so:</p>
+
+<p><code>bash
+grep -c pattern file1 file2
+</code>
+EOF</p>
+]]></content>
+  </entry>
+  
+</feed>

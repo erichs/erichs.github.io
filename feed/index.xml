@@ -4,7 +4,7 @@
   <title><![CDATA[Terminal Curiosity]]></title>
   <link href="http://erichs.github.io/feed" rel="self"/>
   <link href="http://erichs.github.io/"/>
-  <updated>2014-06-26T17:15:17-04:00</updated>
+  <updated>2014-06-27T12:44:10-04:00</updated>
   <id>http://erichs.github.io/</id>
   <author>
     <name><![CDATA[Erich Smith]]></name>
@@ -12,6 +12,115 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Curious Case of the Disappearing Cats]]></title>
+    <link href="http://erichs.github.io/blog/2014/06/27/curious-case-of-the-disappearing-cats/"/>
+    <updated>2014-06-27T11:02:58-04:00</updated>
+    <id>http://erichs.github.io/blog/2014/06/27/curious-case-of-the-disappearing-cats</id>
+    <content type="html"><![CDATA[<p>As any Unix veteran will tell you, the <code>cat</code> utility is much abused. Here&rsquo;s the common scenario:</p>
+
+<figure class='code'><figcaption><span>Useless Use of Cat</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>cat myfile <span class="p">|</span> grep mypattern
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Of course, this kind of abuse isn&rsquo;t limited to the &ldquo;pipe to grep&rdquo; variety. Here&rsquo;s the general form:</p>
+
+<figure class='code'><figcaption><span>It&#8217;s not good for my&#8230; idiom.</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>cat &lt;file&gt; <span class="p">|</span> &lt;<span class="nb">command</span>&gt; arg1 arg2 argN
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Indeed, flaming other Unix users for the <a href="http://en.wikipedia.org/wiki/Cat_(Unix)#Useless_use_of_cat">Useless Use of Cat</a> has long been the &lsquo;national sport&rsquo; of the Unix tribe, since Usenet days.</p>
+
+<h1>What&rsquo;s wrong with this pattern?</h1>
+
+<p>One thing, certainly. Two things, probably.</p>
+
+<h2>1. <code>cat</code> is meant to concatenate two or more files together</h2>
+
+<p>If you are using <code>cat</code> with only one filename argument, then by definition you aren&rsquo;t concatenating anything.</p>
+
+<p>So, here&rsquo;s the proper use of <code>cat</code>:</p>
+
+<figure class='code'><figcaption><span>meow</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>cat blacklion.txt greenlion.txt redlion.txt bluelion.txt yellowlion.txt &gt; VOLTRON.txt
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>2. many commands accept STDIN, but prefer a filename argument</h2>
+
+<p>This falls into the larger anti-pattern of &ldquo;Useless Use of Pipe&rdquo;. Instead of:</p>
+
+<figure class='code'><figcaption><span>Useless Use of Pipe</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>cat internet_memes.txt <span class="p">|</span> grep -i <span class="s2">&quot;chuck norris&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Consider:</p>
+
+<figure class='code'><figcaption><span>He doesn&#8217;t sleep, he waits&#8230;</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>grep -i <span class="s2">&quot;chuck norris&quot;</span> internet_memes.txt
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Why is this such a common anti-pattern?</h1>
+
+<p>I still find myself occasionally falling into this pattern, despite two decades&#8217; worth of keyboard time on Unix variants. I think this habit likely persists for two reasons:</p>
+
+<h2>1. The habit is learned early</h2>
+
+<p>Early bad habits are often hard to break. One of the first things a CLI user wants to do is to read a file, and until the use of pager commands becomes second nature, this will likely lead to:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>cat somefile
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>For small ASCII files, this may even be an appropriate use of <code>cat</code>. Usually though, this early habit leads to a second, more subtle, and persistent mental model.</p>
+
+<h2>2. <code>cat</code> is a conceptual pipeline source</h2>
+
+<p>When building up a complex filter, often <code>cat</code> starts things off:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>cat myfile <span class="p">|</span> grep pattern <span class="p">|</span> tr <span class="s1">&#39;A-Z&#39;</span> <span class="s1">&#39;a-z&#39;</span> &gt; outfile
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The thought process behind this command is: start with some text, then filter it thus, and filter it so, then write it to an output file. Simple. In some cases, I even give myself a pass on this if it makes my intention clearer. Usually, though, I try to fix the habit.</p>
+
+<h1>The Fix?</h1>
+
+<p>Refactoring. No, really. More on this soon.</p>
+
+<h1>Bonus: Useless use of <code>wc</code></h1>
+
+<p>Often I will do the following to get a matching pattern count:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>cat file1 file2 <span class="p">|</span> grep pattern <span class="p">|</span> wc -l
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So, first let&rsquo;s clean up the UUoP:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>grep pattern file1 file2 <span class="p">|</span> wc -l
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Turns out, <code>grep</code> has a <code>-c</code> flag, which display the count of matched lines, so:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>grep -c pattern file1 file2
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>EOF</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[hello world]]></title>
