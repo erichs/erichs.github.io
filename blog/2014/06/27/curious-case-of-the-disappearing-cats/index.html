@@ -86,6 +86,9 @@
 
 <p>Indeed, flaming other Unix users for the <a href="http://en.wikipedia.org/wiki/Cat_(Unix)#Useless_use_of_cat">Useless Use of Cat</a> has long been the &lsquo;national sport&rsquo; of the Unix tribe, since Usenet days.</p>
 
+<!-- more -->
+
+
 <h1>What&rsquo;s wrong with this pattern?</h1>
 
 <p>One thing, certainly. Two things, probably.</p>
@@ -103,7 +106,7 @@
 
 <h2>2. many commands accept STDIN, but prefer a filename argument</h2>
 
-<p>This falls into the larger anti-pattern of &ldquo;Useless Use of Pipe&rdquo;. Instead of:</p>
+<p>This falls into a related anti-pattern of &ldquo;Useless Use of Pipe&rdquo;. Instead of:</p>
 
 <figure class='code'><figcaption><span>Useless Use of Pipe</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='bash'><span class='line'>cat internet_memes.txt <span class="p">|</span> grep -i <span class="s2">&quot;chuck norris&quot;</span>
@@ -145,7 +148,7 @@
 
 <h1>The Fix?</h1>
 
-<p>Refactoring. No, really. More on this soon.</p>
+<p>Refactoring. No, really. More on this next time.</p>
 
 <h1>Bonus: Useless use of <code>wc</code></h1>
 
@@ -218,6 +221,10 @@
     <div class="posts">
       <h2>Recent Posts <i class="fa fa-file-text-o"></i></h2>
       <ul>
+        
+          <li>
+            <a href="/blog/2014/06/27/live-and-let-live/">Live and Let Live?</a>
+          </li>
         
           <li>
             <a href="/blog/2014/06/27/curious-case-of-the-disappearing-cats/">Curious Case of the Disappearing Cats</a>

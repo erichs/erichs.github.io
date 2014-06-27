@@ -4,7 +4,7 @@
   <title><![CDATA[Terminal Curiosity]]></title>
   <link href="http://erichs.github.io/feed" rel="self"/>
   <link href="http://erichs.github.io/"/>
-  <updated>2014-06-27T12:48:53-04:00</updated>
+  <updated>2014-06-27T14:52:10-04:00</updated>
   <id>http://erichs.github.io/</id>
   <author>
     <name><![CDATA[Erich Smith]]></name>
@@ -12,6 +12,23 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Live and Let Live?]]></title>
+    <link href="http://erichs.github.io/blog/2014/06/27/live-and-let-live/"/>
+    <updated>2014-06-27T13:31:31-04:00</updated>
+    <id>http://erichs.github.io/blog/2014/06/27/live-and-let-live</id>
+    <content type="html"><![CDATA[<p>In the <a href="http://erichs.github.io/blog/2014/06/27/curious-case-of-the-disappearing-cats/" title="Curious Case of the Disappearing Cats">previous post</a> I talked about the Useless Use of Cat.</p>
+
+<h1>more than one way to TMTOWTDI</h1>
+
+<h1>broken windows</h1>
+
+<h1>getting better, all the time</h1>
+
+<h1>enter refactoring</h1>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Curious Case of the Disappearing Cats]]></title>
@@ -34,6 +51,9 @@
 
 <p>Indeed, flaming other Unix users for the <a href="http://en.wikipedia.org/wiki/Cat_(Unix)#Useless_use_of_cat">Useless Use of Cat</a> has long been the &lsquo;national sport&rsquo; of the Unix tribe, since Usenet days.</p>
 
+<!-- more -->
+
+
 <h1>What&rsquo;s wrong with this pattern?</h1>
 
 <p>One thing, certainly. Two things, probably.</p>
@@ -51,7 +71,7 @@
 
 <h2>2. many commands accept STDIN, but prefer a filename argument</h2>
 
-<p>This falls into the larger anti-pattern of &ldquo;Useless Use of Pipe&rdquo;. Instead of:</p>
+<p>This falls into a related anti-pattern of &ldquo;Useless Use of Pipe&rdquo;. Instead of:</p>
 
 <figure class='code'><figcaption><span>Useless Use of Pipe</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='bash'><span class='line'>cat internet_memes.txt <span class="p">|</span> grep -i <span class="s2">&quot;chuck norris&quot;</span>
@@ -93,7 +113,7 @@
 
 <h1>The Fix?</h1>
 
-<p>Refactoring. No, really. More on this soon.</p>
+<p>Refactoring. No, really. More on this next time.</p>
 
 <h1>Bonus: Useless use of <code>wc</code></h1>
 
