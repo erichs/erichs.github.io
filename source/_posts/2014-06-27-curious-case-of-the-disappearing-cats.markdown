@@ -19,6 +19,8 @@ cat <file> | <command> arg1 arg2 argN
 
 Indeed, flaming other Unix users for the [Useless Use of Cat][1] has long been the 'national sport' of the Unix tribe, since Usenet days.
 
+<!-- more -->
+
 # What's wrong with this pattern?
 
 One thing, certainly. Two things, probably.
