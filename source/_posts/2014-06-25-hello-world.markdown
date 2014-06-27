@@ -10,3 +10,5 @@ cats.each do |cat|
   cat.kill if cat.curious?
 end
 {% endhighlight %}
+
+EOF
