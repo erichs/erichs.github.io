@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: musings | Terminal Curiosity]]></title>
-  <link href="http://erichs.github.io/blog/categories/musings/atom.xml" rel="self"/>
+  <title><![CDATA[Category: ruby | Terminal Curiosity]]></title>
+  <link href="http://erichs.github.io/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://erichs.github.io/"/>
-  <updated>2014-06-27T14:57:34-04:00</updated>
+  <updated>2014-06-27T15:28:50-04:00</updated>
   <id>http://erichs.github.io/</id>
   <author>
     <name><![CDATA[Erich Smith]]></name>
