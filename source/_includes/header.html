@@ -34,4 +34,10 @@
   {% else %}
     <li><a href="{{ root_url }}/blog/archives">archives</a></li>
   {% endif %}
+
+  {% if page.current == 'categories' %}
+    <li><a href="{{ root_url }}/blog/categories" class="current">categories</a></li>
+  {% else %}
+    <li><a href="{{ root_url }}/blog/categories">categories</a></li>
+  {% endif %}
 </ul>
