@@ -35,7 +35,7 @@ cat blacklion.txt greenlion.txt redlion.txt bluelion.txt yellowlion.txt > VOLTRO
 ```
 
 ## 2. many commands accept STDIN, but prefer a filename argument
-This falls into the larger anti-pattern of "Useless Use of Pipe". Instead of:
+This falls into a related anti-pattern of "Useless Use of Pipe". Instead of:
 
 ``` bash Useless Use of Pipe
 cat internet_memes.txt | grep -i "chuck norris"
@@ -69,7 +69,7 @@ cat myfile | grep pattern | tr 'A-Z' 'a-z' > outfile
 The thought process behind this command is: start with some text, then filter it thus, and filter it so, then write it to an output file. Simple. In some cases, I even give myself a pass on this if it makes my intention clearer. Usually, though, I try to fix the habit.
 
 # The Fix?
-Refactoring. No, really. More on this soon.
+Refactoring. No, really. More on this next time.
 
 # Bonus: Useless use of `wc`
 Often I will do the following to get a matching pattern count:
