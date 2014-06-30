@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ruby | Terminal Curiosity]]></title>
   <link href="http://erichs.github.io/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://erichs.github.io/"/>
-  <updated>2014-06-27T15:28:50-04:00</updated>
+  <updated>2014-06-29T22:39:09-04:00</updated>
   <id>http://erichs.github.io/</id>
   <author>
     <name><![CDATA[Erich Smith]]></name>
@@ -14,15 +14,13 @@
 
   
   <entry>
-    <title type="html"><![CDATA[hello world]]></title>
+    <title type="html"><![CDATA[Hello World]]></title>
     <link href="http://erichs.github.io/blog/2014/06/25/hello-world/"/>
     <updated>2014-06-25T22:30:30-04:00</updated>
     <id>http://erichs.github.io/blog/2014/06/25/hello-world</id>
     <content type="html"><![CDATA[<p><div class="highlight"><pre><code class="ruby"><span class="n">cats</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">cat</span><span class="o">|</span>
   <span class="n">cat</span><span class="o">.</span><span class="n">kill</span> <span class="k">if</span> <span class="n">cat</span><span class="o">.</span><span class="n">curious?</span>
 <span class="k">end</span></code></pre></div></p>
-
-<p>EOF</p>
 ]]></content>
   </entry>
   

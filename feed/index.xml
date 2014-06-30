@@ -4,7 +4,7 @@
   <title><![CDATA[Terminal Curiosity]]></title>
   <link href="http://erichs.github.io/feed" rel="self"/>
   <link href="http://erichs.github.io/"/>
-  <updated>2014-06-27T15:28:50-04:00</updated>
+  <updated>2014-06-29T22:39:09-04:00</updated>
   <id>http://erichs.github.io/</id>
   <author>
     <name><![CDATA[Erich Smith]]></name>
@@ -12,6 +12,36 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Broken Windows and Broken Code]]></title>
+    <link href="http://erichs.github.io/blog/2014/06/30/broken-windows-and-broken-code/"/>
+    <updated>2014-06-30T13:31:31-04:00</updated>
+    <id>http://erichs.github.io/blog/2014/06/30/broken-windows-and-broken-code</id>
+    <content type="html"><![CDATA[<p>In the <a href="http://erichs.github.io/blog/2014/06/27/curious-case-of-the-disappearing-cats/" title="Curious Case of the Disappearing Cats">previous post</a> I talked about the Useless Use of Cat, and suggested that this is a habit worth breaking.</p>
+
+<p>Really, though&mdash;isn&rsquo;t There More Than One Way To Skin A Cat? If <code>cat</code> with a single file argument gets the job done, who besides <a href="http://www.smallo.ruhr.de/award.html">Randal Schwartz</a> cares?</p>
+
+<p>I care, and I think you should to.</p>
+
+<!-- more -->
+
+
+<p>The <a href="http://en.wikipedia.org/wiki/Broken_windows_theory">Broken Windows Theory</a> suggests that by continuing to use a broken mental model of the <code>cat</code> utility, when you know of a better way, you may be subtly devaluing your surrounding code, and inviting future abuse. Left unchecked, this kind of thinking forms habits that tend to spider outward and, weed-like, slowly choke the life out of a project.</p>
+
+<p>Saying &ldquo;Who cares?&rdquo; to fixable issues within your sphere of control and influence is, in effect, choosing laziness.</p>
+
+<p>Laziness can be a <a href="http://threevirtues.com/">virtue</a>, but it has a dark side, and must be employed intelligently.</p>
+
+<p>Laziness in the form of putting off much-needed refactoring leads to design spaghetti and unmaintainable code: Fail. <i class="fa fa-thumbs-down"></i> This is self-defeating behavior that saps your morale, your momentum needed to accomplish the next task, and your motivation to continue learning and growing. This path ultimately leads to the place programmers go to die: maintaining some ancient application that everyone lives in fear of changing, hoping they are too valuable to be fired. Don&rsquo;t be a <a href="http://en.wikipedia.org/wiki/Wally_(Dilbert)">Wally</a>.</p>
+
+<p>Laziness employed in service of, say, Test-Driven Design leads to deferring design decisions and coding the simplest thing that could possibly work: Win. <i class="fa fa-thumbs-up"></i> This is wise coding that stems from an experiential belief that you will know more about your problem domain tomorrow than you do today. Implicit in this belief is an internal drive to be constantly learning, and a promise, to yourself at least, that tomorrow you will clean up any messes you unintentionally make today.</p>
+
+<p>Don&rsquo;t devalue your own worth, sense of accomplishment, and ability to grow. Fix that broken window today.</p>
+
+<p>More on fixing your shell commands as you go, next time.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Curious Case of the Disappearing Cats]]></title>
@@ -114,19 +144,17 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Turns out, <code>grep</code> has a <code>-c</code> flag, which display the count of matched lines, so:</p>
+<p>Turns out, <code>grep</code> has a <code>-c</code> flag, which displays the count of matched lines, so:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='bash'><span class='line'>grep -c pattern file1 file2
 </span></code></pre></td></tr></table></div></figure>
 
-
-<p>EOF</p>
 ]]></content>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[hello world]]></title>
+    <title type="html"><![CDATA[Hello World]]></title>
     <link href="http://erichs.github.io/blog/2014/06/25/hello-world/"/>
     <updated>2014-06-25T22:30:30-04:00</updated>
     <id>http://erichs.github.io/blog/2014/06/25/hello-world</id>
@@ -137,7 +165,7 @@
 <span class="k">end</span></code></pre></div>
 
 
-<p>EOF</p>
+
 ]]></content>
   </entry>
   

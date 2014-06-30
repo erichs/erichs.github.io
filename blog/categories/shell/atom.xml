@@ -4,7 +4,7 @@
   <title><![CDATA[Category: shell | Terminal Curiosity]]></title>
   <link href="http://erichs.github.io/blog/categories/shell/atom.xml" rel="self"/>
   <link href="http://erichs.github.io/"/>
-  <updated>2014-06-27T15:28:50-04:00</updated>
+  <updated>2014-06-29T22:39:09-04:00</updated>
   <id>http://erichs.github.io/</id>
   <author>
     <name><![CDATA[Erich Smith]]></name>
@@ -105,12 +105,11 @@ cat file1 file2 | grep pattern | wc -l
 grep pattern file1 file2 | wc -l
 </code></p>
 
-<p>Turns out, <code>grep</code> has a <code>-c</code> flag, which display the count of matched lines, so:</p>
+<p>Turns out, <code>grep</code> has a <code>-c</code> flag, which displays the count of matched lines, so:</p>
 
 <p><code>bash
 grep -c pattern file1 file2
-</code>
-EOF</p>
+</code></p>
 ]]></content>
   </entry>
   
