@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "hello world"
+title: "Hello World"
 date: 2014-06-25 22:30:30 -0400
 comments: true
 categories: Ruby
@@ -10,5 +10,3 @@ cats.each do |cat|
   cat.kill if cat.curious?
 end
 {% endhighlight %}
-
-EOF

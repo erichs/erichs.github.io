@@ -1,0 +1,30 @@
+# Servant of Two Masters: tension between REPL and Editor
+## fc utility
+## Two environments, two adaptations
+
+# Unix: The Good, the Bad, and the Ugly
+## Strengths can be perceived as weaknesses
+## Focusing on weakness leads to limiting beliefs
+## Inverting limiting beliefs can lead to empowering questions
+
+# What would beautiful shell look like?
+## Empowered minds want to know
+## Composed method pattern
+## Not often applied due to fundamental tension b/w repl and editor
+
+# Enter composure.sh
+## blur the lines between prompt and script
+## draft / revise
+
+# What if shell functions were always available for refactoring?
+## Empowered question 2
+## auto-commit git repo
+
+# What would better documented shell functions look like?
+## In-memory comments?
+## metadata
+
+# Run-time introspection of shell function metadata
+## establish keyword convention
+## put metadata to work!
+

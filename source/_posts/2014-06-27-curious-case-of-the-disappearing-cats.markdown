@@ -84,11 +84,9 @@ So, first let's clean up the UUoP:
 grep pattern file1 file2 | wc -l
 ```
 
-Turns out, `grep` has a `-c` flag, which display the count of matched lines, so:
+Turns out, `grep` has a `-c` flag, which displays the count of matched lines, so:
 
 ``` bash
 grep -c pattern file1 file2
 ```
-EOF
-
 [1]: http://en.wikipedia.org/wiki/Cat_(Unix)#Useless_use_of_cat
