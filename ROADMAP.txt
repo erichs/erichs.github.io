@@ -16,10 +16,6 @@
 ## blur the lines between prompt and script
 ## draft / revise
 
-# What if shell functions were always available for refactoring?
-## Empowered question 2
-## auto-commit git repo
-
 # What would better documented shell functions look like?
 ## In-memory comments?
 ## metadata
@@ -28,3 +24,9 @@
 ## establish keyword convention
 ## put metadata to work!
 
+# Auto-loading composed functions
+## because amnesiac shells suck
+
+# What if shell functions were always available for refactoring?
+## Empowered question 2
+## auto-commit git repo
