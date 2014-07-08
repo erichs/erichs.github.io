@@ -4,7 +4,7 @@
   <title><![CDATA[Terminal Curiosity]]></title>
   <link href="http://erichs.github.io/feed" rel="self"/>
   <link href="http://erichs.github.io/"/>
-  <updated>2014-07-08T14:33:16-04:00</updated>
+  <updated>2014-07-08T14:37:15-04:00</updated>
   <id>http://erichs.github.io/</id>
   <author>
     <name><![CDATA[Erich Smith]]></name>
@@ -146,7 +146,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>This functional composition is natural in a text editor, the natural habitat of a script. It is most unnatural at the prompt, which is too bad.</p>
+<p>This functional composition is easy to do in a text editor, the natural habitat of a script. It is awkward and difficult to do at the prompt, which is too bad.</p>
 
 <p>More on resolving this fundamental tension, next time.</p>
 ]]></content>
