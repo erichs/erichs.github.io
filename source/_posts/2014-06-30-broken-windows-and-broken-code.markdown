@@ -9,7 +9,7 @@ In the [previous post][LastTime] I talked about the Useless Use of Cat, and sugg
 
 Really, though--isn't There More Than One Way To Skin A Cat? If `cat` with a single file argument gets the job done, who besides [Randal Schwartz][PerlGuy] cares?
 
-I care, and I think you should to.
+I care, and I think you should too.
 
 <!-- more -->
 
