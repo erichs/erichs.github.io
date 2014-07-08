@@ -4,7 +4,7 @@
   <title><![CDATA[Terminal Curiosity]]></title>
   <link href="http://erichs.github.io/feed" rel="self"/>
   <link href="http://erichs.github.io/"/>
-  <updated>2014-07-08T11:43:20-04:00</updated>
+  <updated>2014-07-08T14:33:16-04:00</updated>
   <id>http://erichs.github.io/</id>
   <author>
     <name><![CDATA[Erich Smith]]></name>
@@ -12,6 +12,145 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Servant of Two Masters]]></title>
+    <link href="http://erichs.github.io/blog/2014/07/08/servant-of-two-masters/"/>
+    <updated>2014-07-08T14:08:36-04:00</updated>
+    <id>http://erichs.github.io/blog/2014/07/08/servant-of-two-masters</id>
+    <content type="html"><![CDATA[<p><a href="http://erichs.github.io/blog/2014/06/30/broken-windows-and-broken-code/" title="Broken Windows and Broken Code">Last time</a>, I brought up the subject of fixing shell commands as you go along, and suggested that the practice of doing so could be good for your programmatic health. Today I&rsquo;d like to highlight an underused Unix command that does this well, and talk through the broader implications of its use.</p>
+
+<!-- more -->
+
+
+<h2>The <code>fc</code> utility</h2>
+
+<p>First introduced via the Korn Shell, and a <a href="http://pubs.opengroup.org/onlinepubs/9699919799/utilities/fc.html">standard Unix utility</a> since at least the mid-90&rsquo;s, <code>fc</code> is short for &ldquo;fix command&rdquo;. Its purpose is to open up a previous command in the editor of your choice, and re-run the revised command once you are finished editing it.</p>
+
+<p>With no arguments, <code>fc</code> will open the most previous command in the editor for editing and re-evaluation. In pure shell terms, it is roughly equivalent to:</p>
+
+<figure class='code'><figcaption><span>I hope you&#8217;ll agree, &#8216;fc&#8217; is easier to type</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">echo</span> !! &gt; /tmp/cmd <span class="o">&amp;&amp;</span> <span class="nv">$EDITOR</span> /tmp/cmd <span class="o">&amp;&amp;</span> <span class="nb">eval</span> <span class="k">$(</span>cat /tmp/cmd<span class="k">)</span><span class="p">;</span> rm /tmp/cmd
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Most implementations of <code>fc</code> will use an editor specified in the <code>FCEDIT</code> environment variable, followed by <code>EDITOR</code>, then <code>vi</code>, and finally <code>ed</code>. You could of course launch an external editor like Sublime Text or Eclipse, but I find that keeping the editor inside the terminal feels most natural for this purpose.</p>
+
+<p>I want to talk now about the experience of using a command like this. If you&rsquo;ve not used this utility before, go ahead and try it out a few times. Yes, right now. Seriously, I&rsquo;ll wait.</p>
+
+<hr />
+
+
+<center><div class="embed-video-container"><iframe src="http://www.youtube.com/embed/9hmDZz5pDOQ" allowfullscreen></iframe></div></center>
+
+
+<hr />
+
+
+<h2>Context Switching</h2>
+
+<p>So, kinda cool, but a little jarring, right? There you were happily plunking commands down at a prompt, and all of a sudden you&rsquo;re in your familiar editor, but perhaps in a slightly new context. Now you are editing your last command, say <code>ls -l</code>, as if it were a script:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c">#!/bin/sh</span>
+</span><span class='line'>
+</span><span class='line'>ls -l
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Furthermore, the act of saving and quitting ran the script, back at your terminal.</p>
+
+<h2>Two Environments, Two Adaptations</h2>
+
+<p>I think the feeling of slight disorientation that occurs when using <code>fc</code> for the first time stems from inherent tension between the two modes of operation, or execution environments of the shell interpreter: the shell is at once the familiar REPL prompt we use all the time, and the shell is also the interpreter of script files.</p>
+
+<h3>The Prompt</h3>
+
+<p>We naturally adapt our shell behaviors, as users, to these different execution environments: the interactive, REPL-nature of the prompt means that we can run a quick command, and immediately see the output displayed to the terminal. Based on that output, we might decide to try a different command altogether, consult a man page, or perhaps just hit the up arrow and make a quick revision to our command.</p>
+
+<p>In particular, using the shell prompt to build up complex command pipelines is invaluable: you get to see the output of each filter command:</p>
+
+<script type="text/javascript" src="https://asciinema.org/a/10680.js" id="asciicast-10680" async data-speed="2"></script>
+
+
+<p>At the prompt, this feels natural. You try a command, examine the output or result, add an appropriate filter command or commands until you have massaged the output into a desired format. You have the benefit of <strong>understandability</strong> as a <strong>writer</strong> of the command because the output of all the intermediate commands are available to you <strong>while</strong> you are writing.</p>
+
+<h3>The Script</h3>
+
+<p>Contrast that experience with encountering something like this in a script:</p>
+
+<figure class='code'><figcaption><span>Readability matters</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c">#!/usr/bin/env bash</span>
+</span><span class='line'> netstat -p tcp <span class="p">|</span> grep -i established <span class="p">|</span> awk <span class="s1">&#39;{print $5}&#39;</span> <span class="p">|</span> awk -F<span class="s1">&#39;.&#39;</span> <span class="s1">&#39;{ $NF=&quot;&quot; } 1&#39;</span> <span class="p">|</span> sed <span class="s1">&#39;s/ /./g&#39;</span> <span class="p">|</span> sed <span class="s1">&#39;s/\.$//&#39;</span> <span class="p">|</span> sort <span class="p">|</span> uniq
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The above is simply unintelligible. Even if you are a regex master and know the syntax for each of the above commands, you do not have the benefit of having written that command to begin with. The intent of all those pipeline filters is not communicated to the reader, and unless you actually played with that command, one step at a time, at the prompt, it is unlikely you would ever know what that command does.</p>
+
+<p><strong>Pipes, as a design feature, are central the <a href="http://en.wikipedia.org/wiki/Unix_philosophy">Unix way</a></strong>. They are Unix&rsquo;s killer app. Unfortunately, they <strong>mask the intent</strong> of a command sequence. They are extremely convenient to use at a prompt, but end up being <em>write-only</em>.</p>
+
+<p>The maintainer of a script with the above command sequence in it would be well-advised to break that command into sections, or at least encapsulate the pipeline in a descriptive function, like:</p>
+
+<figure class='code'><figcaption><span>Names give the reader a clue</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c">#!/usr/bin/env bash</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">function </span>unique_remote_connected_hosts <span class="o">{</span>
+</span><span class='line'>  netstat -p tcp <span class="p">|</span> grep -i established <span class="p">|</span> awk <span class="s1">&#39;{print $5}&#39;</span> <span class="p">|</span> awk -F<span class="s1">&#39;.&#39;</span> <span class="s1">&#39;{ $NF=&quot;&quot; } 1&#39;</span> <span class="p">|</span> sed <span class="s1">&#39;s/ /./g&#39;</span> <span class="p">|</span> sed <span class="s1">&#39;s/\.$//&#39;</span> <span class="p">|</span> sort <span class="p">|</span> uniq
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>unique_remote_connected_hosts
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>or perhaps:</p>
+
+<figure class='code'><figcaption><span>Composition helps</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c">#!/usr/bin/env bash</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">function </span>unique_remote_connected_hosts <span class="o">{</span>
+</span><span class='line'>  remote_connections <span class="p">|</span> strip_port_number <span class="p">|</span> sort <span class="p">|</span> uniq
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">function </span>remote_connections <span class="o">{</span>
+</span><span class='line'>  netstat -p tcp <span class="p">|</span> grep -i established <span class="p">|</span> awk <span class="s1">&#39;{print $5}&#39;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">function </span>strip_port_number <span class="o">{</span>
+</span><span class='line'>  awk -F<span class="s1">&#39;.&#39;</span> <span class="s1">&#39;{ $NF=&quot;&quot; } 1&#39;</span> <span class="p">|</span> sed <span class="s1">&#39;s/ /./g&#39;</span> <span class="p">|</span> sed <span class="s1">&#39;s/\.$//&#39;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>unique_remote_connected_hosts
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This functional composition is natural in a text editor, the natural habitat of a script. It is most unnatural at the prompt, which is too bad.</p>
+
+<p>More on resolving this fundamental tension, next time.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Broken Windows and Broken Code]]></title>
