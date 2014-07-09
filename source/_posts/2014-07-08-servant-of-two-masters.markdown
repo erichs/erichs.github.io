@@ -61,7 +61,7 @@ Contrast that experience with encountering something like this in a script:
 
 The above is simply unintelligible. Even if you are a regex master and know the syntax for each of the above commands, you do not have the benefit of having written that command to begin with. The intent of all those pipeline filters is not communicated to the reader, and unless you actually played with that command, one step at a time, at the prompt, it is unlikely you would ever know what that command does.
 
-**Pipes, as a design feature, are central the [Unix way][UnixWay]**. They are Unix's killer app. Unfortunately, they **mask the intent** of a command sequence. They are extremely convenient to use at a prompt, but end up being *write-only*.
+**Pipes, as a design feature, are central to the [Unix way][UnixWay]**. They are Unix's killer app. Unfortunately, they **mask the intent** of a command sequence. They are extremely convenient to use at a prompt, but end up being *write-only*.
 
 The maintainer of a script with the above command sequence in it would be well-advised to break that command into sections, or at least encapsulate the pipeline in a descriptive function, like:
 
