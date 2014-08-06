@@ -3,7 +3,7 @@ layout: post
 title: "Compose with Confidence"
 date: 2014-08-06 10:30:02 -0400
 comments: true
-categories: Shell, Composure
+categories: Shell Composure
 ---
 
 [Last time][LastTime], I noted that the experience of composing shell functions at the command prompt is awkward.
