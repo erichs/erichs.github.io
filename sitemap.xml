@@ -3,6 +3,12 @@
   
   
   <url>
+    <loc>http://erichs.github.io/blog/2014/07/25/composing-with-confidence/</loc>
+    <lastmod>2014-07-25T22:08:02-04:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
     <loc>http://erichs.github.io/blog/2014/07/08/servant-of-two-masters/</loc>
     <lastmod>2014-07-08T14:08:36-04:00</lastmod>
     <priority>0.8</priority>
@@ -29,42 +35,42 @@
   
   <url>
     <loc>http://erichs.github.io/archives/</loc>
-    <lastmod>2014-07-09T10:31:56-04:00</lastmod>
+    <lastmod>2014-08-06T10:26:50-04:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://erichs.github.io/blog/archives/</loc>
-    <lastmod>2014-07-09T10:31:56-04:00</lastmod>
+    <lastmod>2014-08-06T10:26:50-04:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://erichs.github.io/blog/</loc>
-    <lastmod>2014-07-09T10:31:56-04:00</lastmod>
+    <lastmod>2014-08-06T10:26:50-04:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://erichs.github.io/</loc>
-    <lastmod>2014-07-09T10:31:56-04:00</lastmod>
+    <lastmod>2014-08-06T10:26:50-04:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   
   <url>
     <loc>http://erichs.github.io/about/</loc>
-    <lastmod>2014-07-09T10:31:56-04:00</lastmod>
+    <lastmod>2014-08-06T10:26:50-04:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://erichs.github.io/blog/categories/</loc>
-    <lastmod>2014-07-09T10:31:56-04:00</lastmod>
+    <lastmod>2014-08-06T10:26:50-04:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>

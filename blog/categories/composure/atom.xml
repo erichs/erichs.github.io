@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: shell, | Terminal Curiosity]]></title>
-  <link href="http://erichs.github.io/blog/categories/shell/atom.xml" rel="self"/>
+  <title><![CDATA[Category: composure | Terminal Curiosity]]></title>
+  <link href="http://erichs.github.io/blog/categories/composure/atom.xml" rel="self"/>
   <link href="http://erichs.github.io/"/>
   <updated>2014-08-06T10:26:50-04:00</updated>
   <id>http://erichs.github.io/</id>
