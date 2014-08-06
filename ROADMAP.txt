@@ -1,6 +1,3 @@
-# Servant of Two Masters: tension between REPL and Editor
-## fc utility
-## Two environments, two adaptations
 
 # Unix: The Good, the Bad, and the Ugly
 ## Strengths can be perceived as weaknesses
