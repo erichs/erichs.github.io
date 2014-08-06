@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Compose with Confidence"
-date: 2014-07-25 22:08:02 -0400
+date: 2014-08-06 10:30:02 -0400
 comments: true
 categories: Shell, Composure
 ---
