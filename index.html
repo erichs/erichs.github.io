@@ -7,7 +7,7 @@
 
   <meta name="author" content="Erich Smith">
   
-  <meta name="description" content="Compose With Confidence Aug 6th, 2014 Last time, I noted that the experience of composing shell functions at the command prompt is awkward. REPLs ❤ &hellip;">
+  <meta name="description" content="Compose With Confidence Aug 6th, 2014 Last time, I noted that the experience of composing shell functions at the command prompt is awkward. Here& &hellip;">
   
   
 
@@ -79,41 +79,14 @@
 </div>
 
 
-  <div class="post-content"><p><a href="/blog/2014/07/08/servant-of-two-masters/" title="Servant of Two Masters">Last time</a>, I noted that the experience of composing shell functions at the command prompt is awkward.</p>
+  <div class="post-content"><p><a href="/blog/2014/07/08/servant-of-two-masters/" title="Servant of Two Masters">Last time</a>, I noted that the experience of composing shell functions at the command prompt is awkward. Here&rsquo;s what works for me, and why.</p>
 
-<h2>REPLs ❤ Pipes</h2>
-
-<p>The shell command prompt is great for quick <a href="http://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop">REPL</a> feedback: run a command, watch
-the output, tweak the command, and repeat until you have the output you desire.
-This is a great way to build up complex command sequences. Feedback is
-immediate, and the ability to recall and directly edit recent command history
-encourages experimentation.</p>
-
-<p>The prompt is no replacement for a full text editor, however, and there are times that you&rsquo;ll start a command at the prompt and <a href="http://nuclearsquid.com/writings/edit-long-commands/">wish you had done so in an editor</a>.</p>
-
-<p>While available for short-term recall in terminal history, command sequences entered at the prompt have a short shelf-life. Shell functions defined (albeit painfully) at the prompt, for example, do not persist across shell invocations.</p>
-
-<p>Composing a complex logic construct or shell function at the prompt is, at best, ephemeral and awkward.</p>
-
-<h2>Scripts ❤ Functions</h2>
-
-<p>Script <em>files</em> are the natural habitat for functions and larger programmatic constructs: after all, you have a full 2D editor environment in which to draft, save and revise your code. What might be a struggle and a chore to compose at the command prompt becomes easy inside a text editor.</p>
-
-<p>Persisting to the filesystem means that you can bring all the tools for dealing
-with files to bear on your script, including version control&mdash;critical to
-maintaining code of any real complexity.</p>
-
-<p>Script files have downsides, of course. Chief among them that you lose all the feedback from the command prompt&mdash;if you are creating a complex command sequence, you&rsquo;re flying blind inside the editor. Also, you&rsquo;ve just inherited all the file-related baggage required to get your script to actually run: shebang lines, executable bits, and PATH considerations.</p>
-
-<p>Composing a complex logic construct or shell function in a script file feels natural, but loses the immediacy of the prompt and can sometimes feel too heavyweight: both factors which discourage the proliferation of lots of small shell functions, which as we&rsquo;ve seen can vastly improve the readability and maintainability of our command sequences.</p>
-
-<h2>Best of both worlds?</h2>
-
-<p>I care about readability in my shell code. If you&rsquo;re reading this, perhaps you do too. I wanted the best of both worlds, prompt <strong><em>and</em></strong> editor, so I wrote <a href="https://github.com/erichs/composure">composure, a set of opinionated shell functions that help you write shell functions</a>.</p>
-
-<p>In a future post, I&rsquo;ll highlight a few of the features and benefits of writing shell functions with composure, and a few unexpected use cases I&rsquo;ve found.</p>
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/08/06/compose-with-confidence/"><h3><i class='fa fa-terminal'></i>  more</h3></a>
+    </footer>
   
 
  </div>

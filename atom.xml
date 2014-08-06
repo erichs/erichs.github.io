@@ -4,7 +4,7 @@
   <title><![CDATA[Terminal Curiosity]]></title>
   <link href="http://erichs.github.io/atom.xml" rel="self"/>
   <link href="http://erichs.github.io/"/>
-  <updated>2014-08-06T10:31:17-04:00</updated>
+  <updated>2014-08-06T10:41:47-04:00</updated>
   <id>http://erichs.github.io/</id>
   <author>
     <name><![CDATA[Erich Smith]]></name>
@@ -18,7 +18,10 @@
     <link href="http://erichs.github.io/blog/2014/08/06/compose-with-confidence/"/>
     <updated>2014-08-06T10:30:02-04:00</updated>
     <id>http://erichs.github.io/blog/2014/08/06/compose-with-confidence</id>
-    <content type="html"><![CDATA[<p><a href="http://erichs.github.io/blog/2014/07/08/servant-of-two-masters/" title="Servant of Two Masters">Last time</a>, I noted that the experience of composing shell functions at the command prompt is awkward.</p>
+    <content type="html"><![CDATA[<p><a href="http://erichs.github.io/blog/2014/07/08/servant-of-two-masters/" title="Servant of Two Masters">Last time</a>, I noted that the experience of composing shell functions at the command prompt is awkward. Here&rsquo;s what works for me, and why.</p>
+
+<!-- more -->
+
 
 <h2>REPLs ❤ Pipes</h2>
 
