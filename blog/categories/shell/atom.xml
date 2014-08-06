@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: shell, | Terminal Curiosity]]></title>
+  <title><![CDATA[Category: shell | Terminal Curiosity]]></title>
   <link href="http://erichs.github.io/blog/categories/shell/atom.xml" rel="self"/>
   <link href="http://erichs.github.io/"/>
-  <updated>2014-08-06T10:30:41-04:00</updated>
+  <updated>2014-08-06T10:31:17-04:00</updated>
   <id>http://erichs.github.io/</id>
   <author>
     <name><![CDATA[Erich Smith]]></name>
@@ -51,6 +51,222 @@ maintaining code of any real complexity.</p>
 <p>I care about readability in my shell code. If you&rsquo;re reading this, perhaps you do too. I wanted the best of both worlds, prompt <strong><em>and</em></strong> editor, so I wrote <a href="https://github.com/erichs/composure">composure, a set of opinionated shell functions that help you write shell functions</a>.</p>
 
 <p>In a future post, I&rsquo;ll highlight a few of the features and benefits of writing shell functions with composure, and a few unexpected use cases I&rsquo;ve found.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Servant of Two Masters]]></title>
+    <link href="http://erichs.github.io/blog/2014/07/08/servant-of-two-masters/"/>
+    <updated>2014-07-08T14:08:36-04:00</updated>
+    <id>http://erichs.github.io/blog/2014/07/08/servant-of-two-masters</id>
+    <content type="html"><![CDATA[<p><a href="/blog/2014/06/30/broken-windows-and-broken-code/" title="Broken Windows and Broken Code">Last time</a>, I brought up the subject of fixing shell commands as you go along, and suggested that the practice of doing so could be good for your programmatic health. Today I&rsquo;d like to highlight an underused Unix command that does this well, and talk through the broader implications of its use.</p>
+
+<!-- more -->
+
+
+<h2>The <code>fc</code> utility</h2>
+
+<p>First introduced via the Korn Shell, and a <a href="http://pubs.opengroup.org/onlinepubs/9699919799/utilities/fc.html">standard Unix utility</a> since at least the mid-90&rsquo;s, <code>fc</code> is short for &ldquo;fix command&rdquo;. Its purpose is to open up a previous command in the editor of your choice, and re-run the revised command once you are finished editing it.</p>
+
+<p>With no arguments, <code>fc</code> will open the most previous command in the editor for editing and re-evaluation. In pure shell terms, it is roughly equivalent to:</p>
+
+<p><code>bash I hope you'll agree, 'fc' is easier to type
+echo !! &gt; /tmp/cmd &amp;&amp; $EDITOR /tmp/cmd &amp;&amp; eval $(cat /tmp/cmd); rm /tmp/cmd
+</code></p>
+
+<p>Most implementations of <code>fc</code> will use an editor specified in the <code>FCEDIT</code> environment variable, followed by <code>EDITOR</code>, then <code>vi</code>, and finally <code>ed</code>. You could of course launch an external editor like Sublime Text or Eclipse, but I find that keeping the editor inside the terminal feels most natural for this purpose.</p>
+
+<p>I want to talk now about the experience of using a command like this. If you&rsquo;ve not used this utility before, go ahead and try it out a few times. Yes, right now. Seriously, I&rsquo;ll wait.</p>
+
+<hr />
+
+
+<center><div class="embed-video-container"><iframe src="http://www.youtube.com/embed/9hmDZz5pDOQ" allowfullscreen></iframe></div></center>
+
+
+<hr />
+
+
+<h2>Context Switching</h2>
+
+<p>So, kinda cool, but a little jarring, right? There you were happily plunking commands down at a prompt, and all of a sudden you&rsquo;re in your familiar editor, but perhaps in a slightly new context. Now you are editing your last command, say <code>ls -l</code>, as if it were a script:</p>
+
+<p>``` bash</p>
+
+<h1>!/bin/sh</h1>
+
+<p>ls -l
+```</p>
+
+<p>Furthermore, the act of saving and quitting ran the script, back at your terminal.</p>
+
+<h2>Two Environments, Two Adaptations</h2>
+
+<p>I think the feeling of slight disorientation that occurs when using <code>fc</code> for the first time stems from inherent tension between the two modes of operation, or execution environments of the shell interpreter: the shell is at once the familiar REPL prompt we use all the time, and the shell is also the interpreter of script files.</p>
+
+<h3>The Prompt</h3>
+
+<p>We naturally adapt our shell behaviors, as users, to these different execution environments: the interactive, REPL-nature of the prompt means that we can run a quick command, and immediately see the output displayed to the terminal. Based on that output, we might decide to try a different command altogether, consult a man page, or perhaps just hit the up arrow and make a quick revision to our command.</p>
+
+<p>In particular, using the shell prompt to build up complex command pipelines is invaluable: you get to see the output of each filter command:</p>
+
+<script type="text/javascript" src="https://asciinema.org/a/10680.js" id="asciicast-10680" async data-speed="2"></script>
+
+
+<p>At the prompt, this feels natural. You try a command, examine the output or result, add an appropriate filter command or commands until you have massaged the output into a desired format. You have the benefit of <strong>understandability</strong> as a <strong>writer</strong> of the command because the output of all the intermediate commands are available to you <strong>while</strong> you are writing.</p>
+
+<h3>The Script</h3>
+
+<p>Contrast that experience with encountering something like this in a script:</p>
+
+<p>```bash Readability matters</p>
+
+<h1>!/usr/bin/env bash</h1>
+
+<p> netstat -p tcp | grep -i established | awk &lsquo;{print $5}&rsquo; | awk -F'.&lsquo; &rsquo;{ $NF=&ldquo;&rdquo; } 1' | sed &rsquo;s/ /./g' | sed &rsquo;s/.$//&lsquo; | sort | uniq
+```</p>
+
+<p>The above is simply unintelligible. Even if you are a regex master and know the syntax for each of the above commands, you do not have the benefit of having written that command to begin with. The intent of all those pipeline filters is not communicated to the reader, and unless you actually played with that command, one step at a time, at the prompt, it is unlikely you would ever know what that command does.</p>
+
+<p><strong>Pipes, as a design feature, are central to the <a href="http://en.wikipedia.org/wiki/Unix_philosophy">Unix way</a></strong>. They are Unix&rsquo;s killer app. Unfortunately, they <strong>mask the intent</strong> of a command sequence. They are extremely convenient to use at a prompt, but end up being <em>write-only</em>.</p>
+
+<p>The maintainer of a script with the above command sequence in it would be well-advised to break that command into sections, or at least encapsulate the pipeline in a descriptive function, like:</p>
+
+<p>```bash Names give the reader a clue</p>
+
+<h1>!/usr/bin/env bash</h1>
+
+<p>function unique_remote_connected_hosts {
+  netstat -p tcp | grep -i established | awk &lsquo;{print $5}&rsquo; | awk -F'.&lsquo; &rsquo;{ $NF=&ldquo;&rdquo; } 1' | sed &rsquo;s/ /./g' | sed &rsquo;s/.$//&lsquo; | sort | uniq
+}</p>
+
+<p>unique_remote_connected_hosts
+```</p>
+
+<p>or perhaps:</p>
+
+<p>```bash Composition helps</p>
+
+<h1>!/usr/bin/env bash</h1>
+
+<p>function unique_remote_connected_hosts {
+  remote_connections | strip_port_number | sort | uniq
+}</p>
+
+<p>function remote_connections {
+  netstat -p tcp | grep -i established | awk &lsquo;{print $5}&rsquo;
+}</p>
+
+<p>function strip_port_number {
+  awk -F'.&lsquo; &rsquo;{ $NF=&ldquo;&rdquo; } 1' | sed &rsquo;s/ /./g' | sed &rsquo;s/.$//&lsquo;
+}</p>
+
+<p>unique_remote_connected_hosts
+```</p>
+
+<p>This functional composition is easy to do in a text editor, the natural habitat of a script. It is awkward and difficult to do at the prompt, which is too bad.</p>
+
+<p>More on resolving this fundamental tension, next time.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Curious Case of the Disappearing Cats]]></title>
+    <link href="http://erichs.github.io/blog/2014/06/27/curious-case-of-the-disappearing-cats/"/>
+    <updated>2014-06-27T11:02:58-04:00</updated>
+    <id>http://erichs.github.io/blog/2014/06/27/curious-case-of-the-disappearing-cats</id>
+    <content type="html"><![CDATA[<p>As any Unix veteran will tell you, the <code>cat</code> utility is much abused. Here&rsquo;s the common scenario:</p>
+
+<p><code>bash Useless Use of Cat
+cat myfile | grep mypattern
+</code></p>
+
+<p>Of course, this kind of abuse isn&rsquo;t limited to the &ldquo;pipe to grep&rdquo; variety. Here&rsquo;s the general form:</p>
+
+<p><code>bash It's not good for my... idiom.
+cat &lt;file&gt; | &lt;command&gt; arg1 arg2 argN
+</code></p>
+
+<p>Indeed, flaming other Unix users for the <a href="http://en.wikipedia.org/wiki/Cat_(Unix)#Useless_use_of_cat">Useless Use of Cat</a> has long been the &lsquo;national sport&rsquo; of the Unix tribe, since Usenet days.</p>
+
+<!-- more -->
+
+
+<h1>What&rsquo;s wrong with this pattern?</h1>
+
+<p>One thing, certainly. Two things, probably.</p>
+
+<h2>1. <code>cat</code> is meant to concatenate two or more files together</h2>
+
+<p>If you are using <code>cat</code> with only one filename argument, then by definition you aren&rsquo;t concatenating anything.</p>
+
+<p>So, here&rsquo;s the proper use of <code>cat</code>:</p>
+
+<p><code>bash meow
+cat blacklion.txt greenlion.txt redlion.txt bluelion.txt yellowlion.txt &gt; VOLTRON.txt
+</code></p>
+
+<h2>2. many commands accept STDIN, but prefer a filename argument</h2>
+
+<p>This falls into a related anti-pattern of &ldquo;Useless Use of Pipe&rdquo;. Instead of:</p>
+
+<p><code>bash Useless Use of Pipe
+cat internet_memes.txt | grep -i "chuck norris"
+</code></p>
+
+<p>Consider:</p>
+
+<p><code>bash He doesn't sleep, he waits...
+grep -i "chuck norris" internet_memes.txt
+</code></p>
+
+<h1>Why is this such a common anti-pattern?</h1>
+
+<p>I still find myself occasionally falling into this pattern, despite two decades' worth of keyboard time on Unix variants. I think this habit likely persists for two reasons:</p>
+
+<h2>1. The habit is learned early</h2>
+
+<p>Early bad habits are often hard to break. One of the first things a CLI user wants to do is to read a file, and until the use of pager commands becomes second nature, this will likely lead to:</p>
+
+<p><code>bash
+cat somefile
+</code></p>
+
+<p>For small ASCII files, this may even be an appropriate use of <code>cat</code>. Usually though, this early habit leads to a second, more subtle, and persistent mental model.</p>
+
+<h2>2. <code>cat</code> is a conceptual pipeline source</h2>
+
+<p>When building up a complex filter, often <code>cat</code> starts things off:</p>
+
+<p><code>bash
+cat myfile | grep pattern | tr 'A-Z' 'a-z' &gt; outfile
+</code></p>
+
+<p>The thought process behind this command is: start with some text, then filter it thus, and filter it so, then write it to an output file. Simple. In some cases, I even give myself a pass on this if it makes my intention clearer. Usually, though, I try to fix the habit.</p>
+
+<h1>The Fix?</h1>
+
+<p>Refactoring. No, really. More on this next time.</p>
+
+<h1>Bonus: Useless use of <code>wc</code></h1>
+
+<p>Often I will do the following to get a matching pattern count:</p>
+
+<p><code>bash
+cat file1 file2 | grep pattern | wc -l
+</code></p>
+
+<p>So, first let&rsquo;s clean up the UUoP:</p>
+
+<p><code>bash
+grep pattern file1 file2 | wc -l
+</code></p>
+
+<p>Turns out, <code>grep</code> has a <code>-c</code> flag, which displays the count of matched lines, so:</p>
+
+<p><code>bash
+grep -c pattern file1 file2
+</code></p>
 ]]></content>
   </entry>
   
