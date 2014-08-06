@@ -6,7 +6,9 @@ comments: true
 categories: Shell Composure
 ---
 
-[Last time][LastTime], I noted that the experience of composing shell functions at the command prompt is awkward.
+[Last time][LastTime], I noted that the experience of composing shell functions at the command prompt is awkward. Here's what works for me, and why.
+
+<!-- more -->
 
 ## REPLs ❤ Pipes
 
