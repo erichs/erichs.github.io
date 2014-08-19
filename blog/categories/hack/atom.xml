@@ -4,7 +4,7 @@
   <title><![CDATA[Category: hack | Terminal Curiosity]]></title>
   <link href="http://erichs.github.io/blog/categories/hack/atom.xml" rel="self"/>
   <link href="http://erichs.github.io/"/>
-  <updated>2014-08-19T09:58:35-04:00</updated>
+  <updated>2014-08-19T10:01:28-04:00</updated>
   <id>http://erichs.github.io/</id>
   <author>
     <name><![CDATA[Erich Smith]]></name>
@@ -19,6 +19,9 @@
     <updated>2014-08-19T09:02:53-04:00</updated>
     <id>http://erichs.github.io/blog/2014/08/19/bundling-binary-blobs</id>
     <content type="html"><![CDATA[<p>Every once in a blue moon, the following hack comes in handy, and I have to look it up again. I don&rsquo;t remember where I first saw this technique in the wild, but I remember being blown away when I realized what was going on.</p>
+
+<!-- more -->
+
 
 <h2>Effect</h2>
 
