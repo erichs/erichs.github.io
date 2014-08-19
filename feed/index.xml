@@ -4,7 +4,7 @@
   <title><![CDATA[Terminal Curiosity]]></title>
   <link href="http://erichs.github.io/feed" rel="self"/>
   <link href="http://erichs.github.io/"/>
-  <updated>2014-08-13T10:05:21-04:00</updated>
+  <updated>2014-08-19T09:58:35-04:00</updated>
   <id>http://erichs.github.io/</id>
   <author>
     <name><![CDATA[Erich Smith]]></name>
@@ -12,6 +12,72 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Bundling binary blobs]]></title>
+    <link href="http://erichs.github.io/blog/2014/08/19/bundling-binary-blobs/"/>
+    <updated>2014-08-19T09:02:53-04:00</updated>
+    <id>http://erichs.github.io/blog/2014/08/19/bundling-binary-blobs</id>
+    <content type="html"><![CDATA[<p>Every once in a blue moon, the following hack comes in handy, and I have to look it up again. I don&rsquo;t remember where I first saw this technique in the wild, but I remember being blown away when I realized what was going on.</p>
+
+<h2>Effect</h2>
+
+<p>A grizzled neckbeard hands you a shell script, and tells you to run it, and that it will install the application you&rsquo;ve been wanting to try out.</p>
+
+<blockquote><p>&#8220;What?&#8221; you say. &#8220;Does it download it from the Internet?&#8221;</p><p>&#8220;No. No network required.&#8221;</p><p>&#8220;What, do I run this with Java, or something?&#8221;</p><p>&#8220;No, it is self-contained.&#8221;</p><p>&#8220;Do I need to type a cryptic command sequence to get this to run?&#8221;</p><p>Look, please just run the script. It will install your application.&#8221;</p></blockquote>
+
+
+<p>Then you look at the file, and see that it is several megabytes long. And, sure enough, it installs your shiny new app. But how?</p>
+
+<h2>Preparation</h2>
+
+<p>You will need:</p>
+
+<ul>
+<li>a <code>tar</code>ed and <code>gzip</code>ped file containing the source or binary distribution you want to bundle</li>
+<li>knowledge of which additional commands to run, if any, to compile, install or otherwise deal with the unpacked files</li>
+<li>an open mind</li>
+</ul>
+
+
+<h2>Method</h2>
+
+<p>You will be creating a <a href="http://en.wikipedia.org/wiki/Self-extracting_archive">self-extracting executable</a>. The fact that the <strong>&lsquo;executable&rsquo;</strong> portion is really <strong>interpreted shell script</strong>, is irrelevant. This technique hinges on the ability of the shell script to reference itself, ignore the shell script portion, and feed the remainder to the shell script as binary data:</p>
+
+<div><script src='https://gist.github.com/01bb10aa16a80171358d.js?file=binary.sh'></script>
+<noscript><pre><code>#!/bin/bash
+sudo do_whatnot_first
+tail -n +8 $0 | tar -zxf - -C /tmp
+cd /tmp/my_extracted_tarfile_location
+./configure &amp;&amp; make &amp;&amp; sudo make install
+exit 0
+#//EOF
+
+$ cat myprog.tar.gz &gt;&gt; binary.sh</code></pre></noscript></div>
+
+
+<p>I actually don&rsquo;t prefer to use this version above, but the magic is easy to spot on line 3: <code>tail -n +8 $0</code>: <code>$0</code> is a reference to this, the current script file, so this command dumps line 8 through the end of the file through a pipeline to a <code>tar</code> extraction command. A careful count of the source reveals that line 8 is where the binary tar data was appended.</p>
+
+<p>I don&rsquo;t like this version because you have to manually and carefully count the lines of code in your script and change line 3 accordingly. I much prefer the following snippet which is more robust, but perhaps a bit harder to follow:</p>
+
+<div><script src='https://gist.github.com/9cb8986fcd2bd4c11217.js?file=improved_binary.sh'></script>
+<noscript><pre><code>#!/bin/bash
+{
+  cd /path/to/unzip || exit
+  while read line do
+    case $line in
+    &quot;exit 0&quot;) break;;
+    esac
+  done
+  gzip -dc | tar xf -
+} &lt; &quot;$0&quot;
+exit 0
+&lt;...binary data here...&gt;</code></pre></noscript></div>
+
+
+<p>This version uses file redirection on <code>$0</code> to put the contents of the script through the whole shell block between curly braces, and uses a <code>while read</code> loop to pre-emptively throw away the lines of STDIN that correspond to the script preamble, before passing the remaining, binary data through tar. The <code>while</code> loop also cleverly uses the string matching capability of <code>case</code> to treat the <code>exit 0</code> as a <a href="http://en.wikipedia.org/wiki/Sentinel_value">sentinel value</a>. Thus, <code>exit 0</code> serves as both the start-of-data marker, and the end-of-script command. Wild.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Lightning Talk at Triangle.rb!]]></title>

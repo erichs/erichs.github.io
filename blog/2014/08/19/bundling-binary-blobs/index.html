@@ -3,15 +3,15 @@
 <html lang="zh-cn">
 <head>
   <meta charset="UTF-8">
-  <title>Compose with Confidence - Terminal Curiosity</title>
+  <title>Bundling binary blobs - Terminal Curiosity</title>
 
   <meta name="author" content="Erich Smith">
   
-  <meta name="description" content="Compose With Confidence Aug 6th, 2014 Last time, I noted that the experience of composing shell functions at the command prompt is awkward. Here& &hellip;">
+  <meta name="description" content="Bundling Binary Blobs Aug 19th, 2014 Every once in a blue moon, the following hack comes in handy, and I have to look it up again. I don&rsquo;t &hellip;">
   
   
 
-  <link rel="canonical" href="http://erichs.github.io/blog/2014/08/06/compose-with-confidence">
+  <link rel="canonical" href="http://erichs.github.io/blog/2014/08/19/bundling-binary-blobs">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Terminal Curiosity" type="application/atom+xml">
@@ -56,7 +56,7 @@
 
     <div id="main"> <div class="post-header">
   
-    <h1 class="post-title">Compose With Confidence</h1>
+    <h1 class="post-title">Bundling Binary Blobs</h1>
   
   
 
@@ -70,46 +70,68 @@
   
 
 
-<time datetime="2014-08-06T10:30:02-04:00" pubdate data-updated="true">Aug 6<sup>th</sup>, 2014</time>
+<time datetime="2014-08-19T09:02:53-04:00" pubdate data-updated="true">Aug 19<sup>th</sup>, 2014</time>
 </div>
 
 
-<div class="post-content"><p><a href="/blog/2014/07/08/servant-of-two-masters/" title="Servant of Two Masters">Last time</a>, I noted that the experience of composing shell functions at the command prompt is awkward. Here&rsquo;s what works for me, and why.</p>
+<div class="post-content"><p>Every once in a blue moon, the following hack comes in handy, and I have to look it up again. I don&rsquo;t remember where I first saw this technique in the wild, but I remember being blown away when I realized what was going on.</p>
 
-<!-- more -->
+<h2>Effect</h2>
+
+<p>A grizzled neckbeard hands you a shell script, and tells you to run it, and that it will install the application you&rsquo;ve been wanting to try out.</p>
+
+<blockquote><p>&#8220;What?&#8221; you say. &#8220;Does it download it from the Internet?&#8221;</p><p>&#8220;No. No network required.&#8221;</p><p>&#8220;What, do I run this with Java, or something?&#8221;</p><p>&#8220;No, it is self-contained.&#8221;</p><p>&#8220;Do I need to type a cryptic command sequence to get this to run?&#8221;</p><p>Look, please just run the script. It will install your application.&#8221;</p></blockquote>
 
 
-<h2>REPLs ❤ Pipes</h2>
+<p>Then you look at the file, and see that it is several megabytes long. And, sure enough, it installs your shiny new app. But how?</p>
 
-<p>The shell command prompt is great for quick <a href="http://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop">REPL</a> feedback: run a command, watch
-the output, tweak the command, and repeat until you have the output you desire.
-This is a great way to build up complex command sequences. Feedback is
-immediate, and the ability to recall and directly edit recent command history
-encourages experimentation.</p>
+<h2>Preparation</h2>
 
-<p>The prompt is no replacement for a full text editor, however, and there are times that you&rsquo;ll start a command at the prompt and <a href="http://nuclearsquid.com/writings/edit-long-commands/">wish you had done so in an editor</a>.</p>
+<p>You will need:</p>
 
-<p>While available for short-term recall in terminal history, command sequences entered at the prompt have a short shelf-life. Shell functions defined (albeit painfully) at the prompt, for example, do not persist across shell invocations.</p>
+<ul>
+<li>a <code>tar</code>ed and <code>gzip</code>ped file containing the source or binary distribution you want to bundle</li>
+<li>knowledge of which additional commands to run, if any, to compile, install or otherwise deal with the unpacked files</li>
+<li>an open mind</li>
+</ul>
 
-<p>Composing a complex logic construct or shell function at the prompt is, at best, ephemeral and awkward.</p>
 
-<h2>Scripts ❤ Functions</h2>
+<h2>Method</h2>
 
-<p>Script <em>files</em> are the natural habitat for functions and larger programmatic constructs: after all, you have a full 2D editor environment in which to draft, save and revise your code. What might be a struggle and a chore to compose at the command prompt becomes easy inside a text editor.</p>
+<p>You will be creating a <a href="http://en.wikipedia.org/wiki/Self-extracting_archive">self-extracting executable</a>. The fact that the <strong>&lsquo;executable&rsquo;</strong> portion is really <strong>interpreted shell script</strong>, is irrelevant. This technique hinges on the ability of the shell script to reference itself, ignore the shell script portion, and feed the remainder to the shell script as binary data:</p>
 
-<p>Persisting to the filesystem means that you can bring all the tools for dealing
-with files to bear on your script, including version control&mdash;critical to
-maintaining code of any real complexity.</p>
+<div><script src='https://gist.github.com/01bb10aa16a80171358d.js?file=binary.sh'></script>
+<noscript><pre><code>#!/bin/bash
+sudo do_whatnot_first
+tail -n +8 $0 | tar -zxf - -C /tmp
+cd /tmp/my_extracted_tarfile_location
+./configure &amp;&amp; make &amp;&amp; sudo make install
+exit 0
+#//EOF
 
-<p>Script files have downsides, of course. Chief among them that you lose all the feedback from the command prompt&mdash;if you are creating a complex command sequence, you&rsquo;re flying blind inside the editor. Also, you&rsquo;ve just inherited all the file-related baggage required to get your script to actually run: shebang lines, executable bits, and PATH considerations.</p>
+$ cat myprog.tar.gz &gt;&gt; binary.sh</code></pre></noscript></div>
 
-<p>Composing a complex logic construct or shell function in a script file feels natural, but loses the immediacy of the prompt and can sometimes feel too heavyweight: both factors which discourage the proliferation of lots of small shell functions, which as we&rsquo;ve seen can vastly improve the readability and maintainability of our command sequences.</p>
 
-<h2>Best of both worlds?</h2>
+<p>I actually don&rsquo;t prefer to use this version above, but the magic is easy to spot on line 3: <code>tail -n +8 $0</code>: <code>$0</code> is a reference to this, the current script file, so this command dumps line 8 through the end of the file through a pipeline to a <code>tar</code> extraction command. A careful count of the source reveals that line 8 is where the binary tar data was appended.</p>
 
-<p>I care about readability in my shell code. If you&rsquo;re reading this, perhaps you do too. I wanted the best of both worlds, prompt <strong><em>and</em></strong> editor, so I wrote <a href="https://github.com/erichs/composure">composure, a set of opinionated shell functions that help you write shell functions</a>.</p>
+<p>I don&rsquo;t like this version because you have to manually and carefully count the lines of code in your script and change line 3 accordingly. I much prefer the following snippet which is more robust, but perhaps a bit harder to follow:</p>
 
-<p>In a future post, I&rsquo;ll highlight a few of the features and benefits of writing shell functions with composure, and a few unexpected use cases I&rsquo;ve found.</p>
+<div><script src='https://gist.github.com/9cb8986fcd2bd4c11217.js?file=improved_binary.sh'></script>
+<noscript><pre><code>#!/bin/bash
+{
+  cd /path/to/unzip || exit
+  while read line do
+    case $line in
+    &quot;exit 0&quot;) break;;
+    esac
+  done
+  gzip -dc | tar xf -
+} &lt; &quot;$0&quot;
+exit 0
+&lt;...binary data here...&gt;</code></pre></noscript></div>
+
+
+<p>This version uses file redirection on <code>$0</code> to put the contents of the script through the whole shell block between curly braces, and uses a <code>while read</code> loop to pre-emptively throw away the lines of STDIN that correspond to the script preamble, before passing the remaining, binary data through tar. The <code>while</code> loop also cleverly uses the string matching capability of <code>case</code> to treat the <code>exit 0</code> as a <a href="http://en.wikipedia.org/wiki/Sentinel_value">sentinel value</a>. Thus, <code>exit 0</code> serves as both the start-of-data marker, and the end-of-script command. Wild.</p>
 </div>
 
 EOF
@@ -123,7 +145,7 @@ EOF
 <span class="categories">
   Categories:
   
-    <a class='category' href='/blog/categories/composure/'>composure</a>, <a class='category' href='/blog/categories/shell/'>shell</a>
+    <a class='category' href='/blog/categories/hack/'>hack</a>, <a class='category' href='/blog/categories/shell/'>shell</a>
   
 </span>
 
@@ -231,8 +253,8 @@ EOF
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://erichs.github.io/blog/2014/08/06/compose-with-confidence/';
-        var disqus_url = 'http://erichs.github.io/blog/2014/08/06/compose-with-confidence/';
+        var disqus_identifier = 'http://erichs.github.io/blog/2014/08/19/bundling-binary-blobs/';
+        var disqus_url = 'http://erichs.github.io/blog/2014/08/19/bundling-binary-blobs/';
         var disqus_script = 'embed.js';
       
     (function () {
