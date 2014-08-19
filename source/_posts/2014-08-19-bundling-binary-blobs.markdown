@@ -8,6 +8,8 @@ categories: Shell Hack
 
 Every once in a blue moon, the following hack comes in handy, and I have to look it up again. I don't remember where I first saw this technique in the wild, but I remember being blown away when I realized what was going on.
 
+<!-- more -->
+
 ## Effect
 
 A grizzled neckbeard hands you a shell script, and tells you to run it, and that it will install the application you've been wanting to try out.
