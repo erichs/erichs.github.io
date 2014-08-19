@@ -3,7 +3,7 @@ layout: post
 title: "Lightning Talk at Triangle.rb!"
 date: 2014-08-13 09:53:47 -0400
 comments: true
-categories: shell presentation
+categories: Shell Presentation
 ---
 
 Last night, I gave a [5-minute "Lightning Talk"][lightningtalk] at [Triangle.rb][tri-rb], entitled "Compose with Confidence". Here are the slides and audio:
