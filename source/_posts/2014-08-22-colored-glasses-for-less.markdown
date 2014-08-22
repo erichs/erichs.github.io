@@ -8,7 +8,11 @@ categories: Shell Ruby
 
 ## Eine kleine Probleme
 
-Sometimes you'll want to view some output in less, the default PAGER, and you'll realize that the output was colorized with ANSI escape sequences. To demonstrate the issue, I'll run a ruby file (example taken from [docopt][naval]) through pygmentize:
+Sometimes you'll want to view some output in less, the default PAGER, and you'll realize that the output was colorized with ANSI escape sequences.
+
+<!-- more -->
+
+To demonstrate the issue, I'll run a ruby file (example taken from [docopt][naval]) through pygmentize:
 
 ```bash
 $ pygmentize -l ruby naval.rb | less
