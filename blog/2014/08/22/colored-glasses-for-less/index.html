@@ -76,7 +76,12 @@
 
 <div class="post-content"><h2>Eine kleine Probleme</h2>
 
-<p>Sometimes you&rsquo;ll want to view some output in less, the default PAGER, and you&rsquo;ll realize that the output was colorized with ANSI escape sequences. To demonstrate the issue, I&rsquo;ll run a ruby file (example taken from <a href="https://github.com/docopt/docopt.rb">docopt</a>) through pygmentize:</p>
+<p>Sometimes you&rsquo;ll want to view some output in less, the default PAGER, and you&rsquo;ll realize that the output was colorized with ANSI escape sequences.</p>
+
+<!-- more -->
+
+
+<p>To demonstrate the issue, I&rsquo;ll run a ruby file (example taken from <a href="https://github.com/docopt/docopt.rb">docopt</a>) through pygmentize:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>pygmentize -l ruby naval.rb <span class="p">|</span> less
