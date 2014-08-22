@@ -1,0 +1,92 @@
+---
+layout: post
+title: "Colored Glasses for Less"
+date: 2014-08-22 09:51:53 -0400
+comments: true
+categories: Shell Ruby
+---
+
+## Eine kleine Probleme
+
+Sometimes you'll want to view some output in less, the default PAGER, and you'll realize that the output was colorized with ANSI escape sequences. To demonstrate the issue, I'll run a ruby file (example taken from [docopt][naval]) through pygmentize:
+
+```bash
+$ pygmentize -l ruby naval.rb | less
+```
+
+which produces:
+
+<pre>
+ESC[36mrequireESC[39;49;00m ESC[39;49;00mESC[33m"ESC[39;49;00mESC[33mdocoptESC[39;49;00mESC[33m"ESC[39;49;00m
+docESC[39;49;00m ESC[39;49;00m=ESC[39;49;00m ESC[39;49;00m<<ESC[39;49;00mESC[31mDOCOPTESC[39;49;00m
+ESC[33mNaval Fate.ESC[39;49;00m
+
+ESC[33mUsage:ESC[39;49;00m
+ESC[33m  #{__FILE__} ship new <name>...ESC[39;49;00m
+ESC[33m  #{__FILE__} ship <name> move <x> <y> [--speed=<kn>]ESC[39;49;00m
+ESC[33m  #{__FILE__} ship shoot <x> <y>ESC[39;49;00m
+ESC[33m  #{__FILE__} mine (set|remove) <x> <y> [--moored|--drifting]ESC[39;49;00m
+ESC[33m  #{__FILE__} -h | --helpESC[39;49;00m
+ESC[33m  #{__FILE__} --versionESC[39;49;00m
+
+ESC[33mOptions:ESC[39;49;00m
+ESC[33m  -h --help     Show this screen.ESC[39;49;00m
+ESC[33m  --version     Show version.ESC[39;49;00m
+ESC[33m  --speed=<kn>  Speed in knots [default: 10].ESC[39;49;00m
+ESC[33m  --moored      Moored (anchored) mine.ESC[39;49;00m
+ESC[33m  --drifting    Drifting mine.ESC[39;49;00m
+
+ESC[31mDOCOPTESC[39;49;00m
+
+ESC[34mbeginESC[39;49;00m
+  ESC[39;49;00mESC[36mrequireESC[39;49;00m ESC[39;49;00mESC[33m"ESC[39;49;00mESC[33mppESC[39;49;00mESC[33m"ESC[39;49;00m
+    ESC[39;49;00mppESC[39;49;00m ESC[39;49;00mESC[33mDocoptESC[39;49;00m:ESC[39;49;00mESC[33m:docoptESC[39;49;00m(ESC[39;49;00mdocESC[39;49;00m)ESC[39;49;00m
+    ESC[34mrescueESC[39;49;00m ESC[39;49;00mESC[33mDocoptESC[39;49;00m:ESC[39;49;00mESC[33m:ExitESC[39;49;00m ESC[39;49;00m=ESC[39;49;00m>ESC[39;49;00m ESC[39;49;00meESC[39;49;00m
+      ESC[39;49;00mESC[36mputsESC[39;49;00m ESC[39;49;00meESC[39;49;00m.ESC[39;49;00mmessageESC[39;49;00m
+      ESC[34mendESC[39;49;00m
+      (END)]]]]]]]]]]]]]]]]]]]]]]]]])]]]]]]]]]"]]]]"]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]"]]]]"]]]]
+</pre>
+
+## Keine Probleme!
+
+Of course, you could have invoked less with `-r: display raw control characters`, but what to do after the fact, when you've got a steaming pile of escape sequences staring back at you?
+
+Less supports entering flags from the `:` prompt. So just type the following literal key sequence to enter raw character mode:
+
+`:--r`
+
+That's colon, dash, dash, r.
+
+Now your less output looks like:
+
+<pre>
+<span style="color:teal;">require</span> <span style="color:olive;">&quot;</span><span style="color:olive;">docopt</span><span style="color:olive;">&quot;</span>
+doc = &lt;&lt;<span style="color:red;">DOCOPT</span>
+<span style="color:olive;">Naval Fate.</span>
+
+<span style="color:olive;">Usage:</span>
+<span style="color:olive;">  #{__FILE__} ship new &lt;name&gt;...</span>
+<span style="color:olive;">  #{__FILE__} ship &lt;name&gt; move &lt;x&gt; &lt;y&gt; [--speed=&lt;kn&gt;]</span>
+<span style="color:olive;">  #{__FILE__} ship shoot &lt;x&gt; &lt;y&gt;</span>
+<span style="color:olive;">  #{__FILE__} mine (set|remove) &lt;x&gt; &lt;y&gt; [--moored|--drifting]</span>
+<span style="color:olive;">  #{__FILE__} -h | --help</span>
+<span style="color:olive;">  #{__FILE__} --version</span>
+
+<span style="color:olive;">Options:</span>
+<span style="color:olive;">  -h --help     Show this screen.</span>
+<span style="color:olive;">  --version     Show version.</span>
+<span style="color:olive;">  --speed=&lt;kn&gt;  Speed in knots [default: 10].</span>
+<span style="color:olive;">  --moored      Moored (anchored) mine.</span>
+<span style="color:olive;">  --drifting    Drifting mine.</span>
+
+<span style="color:red;">DOCOPT</span>
+
+<span style="color:blue;">begin</span>
+  <span style="color:teal;">require</span> <span style="color:olive;">&quot;</span><span style="color:olive;">pp</span><span style="color:olive;">&quot;</span>
+  pp <span style="color:olive;">Docopt</span>:<span style="color:olive;">:docopt</span>(doc)
+<span style="color:blue;">rescue</span> <span style="color:olive;">Docopt</span>:<span style="color:olive;">:Exit</span> =&gt; e
+  <span style="color:teal;">puts</span> e.message
+<span style="color:blue;">end</span>
+</pre>
+
+[naval]: https://github.com/docopt/docopt.rb
