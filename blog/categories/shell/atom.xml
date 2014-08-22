@@ -4,7 +4,7 @@
   <title><![CDATA[Category: shell | Terminal Curiosity]]></title>
   <link href="http://erichs.github.io/blog/categories/shell/atom.xml" rel="self"/>
   <link href="http://erichs.github.io/"/>
-  <updated>2014-08-19T10:01:28-04:00</updated>
+  <updated>2014-08-22T10:18:36-04:00</updated>
   <id>http://erichs.github.io/</id>
   <author>
     <name><![CDATA[Erich Smith]]></name>
@@ -12,6 +12,100 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Colored Glasses for Less]]></title>
+    <link href="http://erichs.github.io/blog/2014/08/22/colored-glasses-for-less/"/>
+    <updated>2014-08-22T09:51:53-04:00</updated>
+    <id>http://erichs.github.io/blog/2014/08/22/colored-glasses-for-less</id>
+    <content type="html"><![CDATA[<h2>Eine kleine Probleme</h2>
+
+<p>Sometimes you&rsquo;ll want to view some output in less, the default PAGER, and you&rsquo;ll realize that the output was colorized with ANSI escape sequences. To demonstrate the issue, I&rsquo;ll run a ruby file (example taken from <a href="https://github.com/docopt/docopt.rb">docopt</a>) through pygmentize:</p>
+
+<p><code>bash
+$ pygmentize -l ruby naval.rb | less
+</code></p>
+
+<p>which produces:</p>
+
+<pre>
+ESC[36mrequireESC[39;49;00m ESC[39;49;00mESC[33m"ESC[39;49;00mESC[33mdocoptESC[39;49;00mESC[33m"ESC[39;49;00m
+docESC[39;49;00m ESC[39;49;00m=ESC[39;49;00m ESC[39;49;00m<<ESC[39;49;00mESC[31mDOCOPTESC[39;49;00m
+ESC[33mNaval Fate.ESC[39;49;00m
+
+ESC[33mUsage:ESC[39;49;00m
+ESC[33m  #{__FILE__} ship new <name>...ESC[39;49;00m
+ESC[33m  #{__FILE__} ship <name> move <x> <y> [--speed=<kn>]ESC[39;49;00m
+ESC[33m  #{__FILE__} ship shoot <x> <y>ESC[39;49;00m
+ESC[33m  #{__FILE__} mine (set|remove) <x> <y> [--moored|--drifting]ESC[39;49;00m
+ESC[33m  #{__FILE__} -h | --helpESC[39;49;00m
+ESC[33m  #{__FILE__} --versionESC[39;49;00m
+
+ESC[33mOptions:ESC[39;49;00m
+ESC[33m  -h --help     Show this screen.ESC[39;49;00m
+ESC[33m  --version     Show version.ESC[39;49;00m
+ESC[33m  --speed=<kn>  Speed in knots [default: 10].ESC[39;49;00m
+ESC[33m  --moored      Moored (anchored) mine.ESC[39;49;00m
+ESC[33m  --drifting    Drifting mine.ESC[39;49;00m
+
+ESC[31mDOCOPTESC[39;49;00m
+
+ESC[34mbeginESC[39;49;00m
+  ESC[39;49;00mESC[36mrequireESC[39;49;00m ESC[39;49;00mESC[33m"ESC[39;49;00mESC[33mppESC[39;49;00mESC[33m"ESC[39;49;00m
+    ESC[39;49;00mppESC[39;49;00m ESC[39;49;00mESC[33mDocoptESC[39;49;00m:ESC[39;49;00mESC[33m:docoptESC[39;49;00m(ESC[39;49;00mdocESC[39;49;00m)ESC[39;49;00m
+    ESC[34mrescueESC[39;49;00m ESC[39;49;00mESC[33mDocoptESC[39;49;00m:ESC[39;49;00mESC[33m:ExitESC[39;49;00m ESC[39;49;00m=ESC[39;49;00m>ESC[39;49;00m ESC[39;49;00meESC[39;49;00m
+      ESC[39;49;00mESC[36mputsESC[39;49;00m ESC[39;49;00meESC[39;49;00m.ESC[39;49;00mmessageESC[39;49;00m
+      ESC[34mendESC[39;49;00m
+      (END)]]]]]]]]]]]]]]]]]]]]]]]]])]]]]]]]]]"]]]]"]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]"]]]]"]]]]
+</pre>
+
+
+<h2>Keine Probleme!</h2>
+
+<p>Of course, you could have invoked less with <code>-r: display raw control characters</code>, but what to do after the fact, when you&rsquo;ve got a steaming pile of escape sequences staring back at you?</p>
+
+<p>Less supports entering flags from the <code>:</code> prompt. So just type the following literal key sequence to enter raw character mode:</p>
+
+<p><code>:--r</code></p>
+
+<p>That&rsquo;s colon, dash, dash, r.</p>
+
+<p>Now your less output looks like:</p>
+
+<pre>
+<span style="color:teal;">require</span> <span style="color:olive;">&quot;</span><span style="color:olive;">docopt</span><span style="color:olive;">&quot;</span>
+doc = &lt;&lt;<span style="color:red;">DOCOPT</span>
+<span style="color:olive;">Naval Fate.</span>
+
+<span style="color:olive;">Usage:</span>
+<span style="color:olive;">  #{__FILE__} ship new &lt;name&gt;...</span>
+<span style="color:olive;">  #{__FILE__} ship &lt;name&gt; move &lt;x&gt; &lt;y&gt; [--speed=&lt;kn&gt;]</span>
+<span style="color:olive;">  #{__FILE__} ship shoot &lt;x&gt; &lt;y&gt;</span>
+<span style="color:olive;">  #{__FILE__} mine (set|remove) &lt;x&gt; &lt;y&gt; [--moored|--drifting]</span>
+<span style="color:olive;">  #{__FILE__} -h | --help</span>
+<span style="color:olive;">  #{__FILE__} --version</span>
+
+<span style="color:olive;">Options:</span>
+<span style="color:olive;">  -h --help     Show this screen.</span>
+<span style="color:olive;">  --version     Show version.</span>
+<span style="color:olive;">  --speed=&lt;kn&gt;  Speed in knots [default: 10].</span>
+<span style="color:olive;">  --moored      Moored (anchored) mine.</span>
+<span style="color:olive;">  --drifting    Drifting mine.</span>
+
+<span style="color:red;">DOCOPT</span>
+
+<span style="color:blue;">begin</span>
+  <span style="color:teal;">require</span> <span style="color:olive;">&quot;</span><span style="color:olive;">pp</span><span style="color:olive;">&quot;</span>
+  pp <span style="color:olive;">Docopt</span>:<span style="color:olive;">:docopt</span>(doc)
+<span style="color:blue;">rescue</span> <span style="color:olive;">Docopt</span>:<span style="color:olive;">:Exit</span> =&gt; e
+  <span style="color:teal;">puts</span> e.message
+<span style="color:blue;">end</span>
+</pre>
+
+
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Bundling binary blobs]]></title>
@@ -252,106 +346,6 @@ echo !! &gt; /tmp/cmd &amp;&amp; $EDITOR /tmp/cmd &amp;&amp; eval $(cat /tmp/cmd
 <p>This functional composition is easy to do in a text editor, the natural habitat of a script. It is awkward and difficult to do at the prompt, which is too bad.</p>
 
 <p>More on resolving this fundamental tension, next time.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Curious Case of the Disappearing Cats]]></title>
-    <link href="http://erichs.github.io/blog/2014/06/27/curious-case-of-the-disappearing-cats/"/>
-    <updated>2014-06-27T11:02:58-04:00</updated>
-    <id>http://erichs.github.io/blog/2014/06/27/curious-case-of-the-disappearing-cats</id>
-    <content type="html"><![CDATA[<p>As any Unix veteran will tell you, the <code>cat</code> utility is much abused. Here&rsquo;s the common scenario:</p>
-
-<p><code>bash Useless Use of Cat
-cat myfile | grep mypattern
-</code></p>
-
-<p>Of course, this kind of abuse isn&rsquo;t limited to the &ldquo;pipe to grep&rdquo; variety. Here&rsquo;s the general form:</p>
-
-<p><code>bash It's not good for my... idiom.
-cat &lt;file&gt; | &lt;command&gt; arg1 arg2 argN
-</code></p>
-
-<p>Indeed, flaming other Unix users for the <a href="http://en.wikipedia.org/wiki/Cat_(Unix)#Useless_use_of_cat">Useless Use of Cat</a> has long been the &lsquo;national sport&rsquo; of the Unix tribe, since Usenet days.</p>
-
-<!-- more -->
-
-
-<h1>What&rsquo;s wrong with this pattern?</h1>
-
-<p>One thing, certainly. Two things, probably.</p>
-
-<h2>1. <code>cat</code> is meant to concatenate two or more files together</h2>
-
-<p>If you are using <code>cat</code> with only one filename argument, then by definition you aren&rsquo;t concatenating anything.</p>
-
-<p>So, here&rsquo;s the proper use of <code>cat</code>:</p>
-
-<p><code>bash meow
-cat blacklion.txt greenlion.txt redlion.txt bluelion.txt yellowlion.txt &gt; VOLTRON.txt
-</code></p>
-
-<h2>2. many commands accept STDIN, but prefer a filename argument</h2>
-
-<p>This falls into a related anti-pattern of &ldquo;Useless Use of Pipe&rdquo;. Instead of:</p>
-
-<p><code>bash Useless Use of Pipe
-cat internet_memes.txt | grep -i "chuck norris"
-</code></p>
-
-<p>Consider:</p>
-
-<p><code>bash He doesn't sleep, he waits...
-grep -i "chuck norris" internet_memes.txt
-</code></p>
-
-<h1>Why is this such a common anti-pattern?</h1>
-
-<p>I still find myself occasionally falling into this pattern, despite two decades' worth of keyboard time on Unix variants. I think this habit likely persists for two reasons:</p>
-
-<h2>1. The habit is learned early</h2>
-
-<p>Early bad habits are often hard to break. One of the first things a CLI user wants to do is to read a file, and until the use of pager commands becomes second nature, this will likely lead to:</p>
-
-<p><code>bash
-cat somefile
-</code></p>
-
-<p>For small ASCII files, this may even be an appropriate use of <code>cat</code>. Usually though, this early habit leads to a second, more subtle, and persistent mental model.</p>
-
-<h2>2. <code>cat</code> is a conceptual pipeline source</h2>
-
-<p>When building up a complex filter, often <code>cat</code> starts things off:</p>
-
-<p><code>bash
-cat myfile | grep pattern | tr 'A-Z' 'a-z' &gt; outfile
-</code></p>
-
-<p>The thought process behind this command is: start with some text, then filter it thus, and filter it so, then write it to an output file. Simple. In some cases, I even give myself a pass on this if it makes my intention clearer. Usually, though, I try to fix the habit.</p>
-
-<h1>The Fix?</h1>
-
-<p>Refactoring. No, really. More on this next time.</p>
-
-<h1>Bonus: Useless use of <code>wc</code></h1>
-
-<p>Often I will do the following to get a matching pattern count:</p>
-
-<p><code>bash
-cat file1 file2 | grep pattern | wc -l
-</code></p>
-
-<p>So, first let&rsquo;s clean up the UUoP:</p>
-
-<p><code>bash
-grep pattern file1 file2 | wc -l
-</code></p>
-
-<p>Turns out, <code>grep</code> has a <code>-c</code> flag, which displays the count of matched lines, so:</p>
-
-<p><code>bash
-grep -c pattern file1 file2
-</code></p>
 ]]></content>
   </entry>
   
