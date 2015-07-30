@@ -4,7 +4,7 @@
   <title><![CDATA[Terminal Curiosity]]></title>
   <link href="http://erichs.github.io/atom.xml" rel="self"/>
   <link href="http://erichs.github.io/"/>
-  <updated>2014-08-22T10:20:55-04:00</updated>
+  <updated>2015-07-30T17:06:08-04:00</updated>
   <id>http://erichs.github.io/</id>
   <author>
     <name><![CDATA[Erich Smith]]></name>
@@ -12,6 +12,153 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[What OSX `pbcopy` Should Have Been]]></title>
+    <link href="http://erichs.github.io/blog/2015/07/30/what-osx-pbcopy-should-have-been/"/>
+    <updated>2015-07-30T16:32:53-04:00</updated>
+    <id>http://erichs.github.io/blog/2015/07/30/what-osx-pbcopy-should-have-been</id>
+    <content type="html"><![CDATA[<p>I sometimes wish <code>pbcopy</code> and <code>pbpaste</code> were the same command, and the command
+just Did What I Mean.</p>
+
+<p>Although <code>pbcopy</code> and <code>pbpaste</code> can be used to do more than simply copy text
+data into and out of the general system clipboard, in practice, I never use
+those features. In fact, I sometimes find it annoying that there wasn&rsquo;t just
+one tool provided that sensed if there was data on <code>STDIN</code>, and copied it to
+the clipboard, and sensed if <code>STDOUT</code> was attached to a pipe or redirect, and
+pasted from the clipboard. In fact, the more I thought about it, the more I
+thought it <em>should</em> do both.</p>
+
+<!-- more -->
+
+
+<p>This utility could probably be written in C or Go, but I couldn&rsquo;t think of any
+reasons I&rsquo;d want native speed for CLI-based clipboard manipulation, so I
+papered over the existing utilities with a bit of shell:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>pb<span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="o">[[</span> -p /dev/stdin <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>              <span class="c"># STDIN is attached to a pipe</span>
+</span><span class='line'>    pbcopy
+</span><span class='line'>  <span class="k">fi</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">  if</span> <span class="o">[[</span> ! -t 0 <span class="o">&amp;&amp;</span> ! -p /dev/stdin <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>  <span class="c"># STDIN is attached to a redirect</span>
+</span><span class='line'>    pbcopy
+</span><span class='line'>  <span class="k">fi</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">  if</span> <span class="o">[[</span> -t 1 <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>                       <span class="c"># STDOUT is attached to a TTY</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">[[</span> -t 0 <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>                     <span class="c"># STDIN is attached to TTY</span>
+</span><span class='line'>      pbpaste
+</span><span class='line'>    <span class="k">fi</span>
+</span><span class='line'><span class="k">  fi</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">  if</span> <span class="o">[[</span> -p /dev/stdout <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>             <span class="c"># STDOUT is attached to a pipe</span>
+</span><span class='line'>    pbpaste
+</span><span class='line'>  <span class="k">fi</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">  if</span> <span class="o">[[</span> ! -t 1 <span class="o">&amp;&amp;</span> ! -p /dev/stdout <span class="o">]]</span><span class="p">;</span> <span class="k">then</span> <span class="c"># STDOUT is attached to a redirection</span>
+</span><span class='line'>    pbpaste
+</span><span class='line'>  <span class="k">fi</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And here it is again with some <a href="https://github.com/erichs/composure">composure</a> metadata:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>pb<span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>  author <span class="s1">&#39;Erich Smith&#39;</span>
+</span><span class='line'>  about <span class="s1">&#39;clipboard DWIM tool&#39;</span>
+</span><span class='line'>  example <span class="s1">&#39;pb                    # paste&#39;</span>
+</span><span class='line'>  example <span class="s1">&#39;echo hi | pb          # copy&#39;</span>
+</span><span class='line'>  example <span class="s1">&#39;echo hi | pb | cat -  # copy and paste&#39;</span>
+</span><span class='line'>  example <span class="s1">&#39;pb &lt;/tmp/file         # copy&#39;</span>
+</span><span class='line'>  example <span class="s1">&#39;pb &gt;/tmp/file         # paste&#39;</span>
+</span><span class='line'>  example <span class="s1">&#39;pb &lt;/tmp/f1 &gt;/tmp/f2  # copy and paste&#39;</span>
+</span><span class='line'>  group <span class="s1">&#39;shell&#39;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="o">[[</span> -p /dev/stdin <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>              <span class="c"># STDIN is attached to a pipe</span>
+</span><span class='line'>    pbcopy
+</span><span class='line'>  <span class="k">fi</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">  if</span> <span class="o">[[</span> ! -t 0 <span class="o">&amp;&amp;</span> ! -p /dev/stdin <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>  <span class="c"># STDIN is attached to a redirect</span>
+</span><span class='line'>    pbcopy
+</span><span class='line'>  <span class="k">fi</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">  if</span> <span class="o">[[</span> -t 1 <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>                       <span class="c"># STDOUT is attached to a TTY</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">[[</span> -t 0 <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>                     <span class="c"># STDIN is attached to TTY</span>
+</span><span class='line'>      pbpaste
+</span><span class='line'>    <span class="k">fi</span>
+</span><span class='line'><span class="k">  fi</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">  if</span> <span class="o">[[</span> -p /dev/stdout <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>             <span class="c"># STDOUT is attached to a pipe</span>
+</span><span class='line'>    pbpaste
+</span><span class='line'>  <span class="k">fi</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">  if</span> <span class="o">[[</span> ! -t 1 <span class="o">&amp;&amp;</span> ! -p /dev/stdout <span class="o">]]</span><span class="p">;</span> <span class="k">then</span> <span class="c"># STDOUT is attached to a redirection</span>
+</span><span class='line'>    pbpaste
+</span><span class='line'>  <span class="k">fi</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Credit to Dejay Clayton for his <a href="http://stackoverflow.com/a/30520299">very informative SO post</a> on the topic of <code>STDIN</code>, <code>STDOUT</code> and <code>STDERR</code> detection.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Colored Glasses for Less]]></title>

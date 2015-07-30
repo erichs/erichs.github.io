@@ -4,7 +4,7 @@
   <title><![CDATA[Category: shell | Terminal Curiosity]]></title>
   <link href="http://erichs.github.io/blog/categories/shell/atom.xml" rel="self"/>
   <link href="http://erichs.github.io/"/>
-  <updated>2014-08-22T10:20:55-04:00</updated>
+  <updated>2015-07-30T17:06:08-04:00</updated>
   <id>http://erichs.github.io/</id>
   <author>
     <name><![CDATA[Erich Smith]]></name>
@@ -12,6 +12,126 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[What OSX `pbcopy` Should Have Been]]></title>
+    <link href="http://erichs.github.io/blog/2015/07/30/what-osx-pbcopy-should-have-been/"/>
+    <updated>2015-07-30T16:32:53-04:00</updated>
+    <id>http://erichs.github.io/blog/2015/07/30/what-osx-pbcopy-should-have-been</id>
+    <content type="html"><![CDATA[<p>I sometimes wish <code>pbcopy</code> and <code>pbpaste</code> were the same command, and the command
+just Did What I Mean.</p>
+
+<p>Although <code>pbcopy</code> and <code>pbpaste</code> can be used to do more than simply copy text
+data into and out of the general system clipboard, in practice, I never use
+those features. In fact, I sometimes find it annoying that there wasn&rsquo;t just
+one tool provided that sensed if there was data on <code>STDIN</code>, and copied it to
+the clipboard, and sensed if <code>STDOUT</code> was attached to a pipe or redirect, and
+pasted from the clipboard. In fact, the more I thought about it, the more I
+thought it <em>should</em> do both.</p>
+
+<!-- more -->
+
+
+<p>This utility could probably be written in C or Go, but I couldn&rsquo;t think of any
+reasons I&rsquo;d want native speed for CLI-based clipboard manipulation, so I
+papered over the existing utilities with a bit of shell:</p>
+
+<p>```bash
+pb() {
+  if [[ -p /dev/stdin ]]; then              # STDIN is attached to a pipe</p>
+
+<pre><code>pbcopy
+</code></pre>
+
+<p>  fi</p>
+
+<p>  if [[ ! -t 0 &amp;&amp; ! -p /dev/stdin ]]; then  # STDIN is attached to a redirect</p>
+
+<pre><code>pbcopy
+</code></pre>
+
+<p>  fi</p>
+
+<p>  if [[ -t 1 ]]; then                       # STDOUT is attached to a TTY</p>
+
+<pre><code>if [[ -t 0 ]]; then                     # STDIN is attached to TTY
+  pbpaste
+fi
+</code></pre>
+
+<p>  fi</p>
+
+<p>  if [[ -p /dev/stdout ]]; then             # STDOUT is attached to a pipe</p>
+
+<pre><code>pbpaste
+</code></pre>
+
+<p>  fi</p>
+
+<p>  if [[ ! -t 1 &amp;&amp; ! -p /dev/stdout ]]; then # STDOUT is attached to a redirection</p>
+
+<pre><code>pbpaste
+</code></pre>
+
+<p>  fi
+}
+```</p>
+
+<p>And here it is again with some <a href="https://github.com/erichs/composure">composure</a> metadata:
+```bash
+pb() {
+  author &lsquo;Erich Smith&rsquo;
+  about &lsquo;clipboard DWIM tool&rsquo;
+  example &lsquo;pb                    # paste&rsquo;
+  example &lsquo;echo hi | pb          # copy&rsquo;
+  example &lsquo;echo hi | pb | cat &ndash;  # copy and paste&rsquo;
+  example &lsquo;pb </tmp/file         # copy'
+  example 'pb >/tmp/file         # paste&rsquo;
+  example &lsquo;pb </tmp/f1 >/tmp/f2  # copy and paste&rsquo;
+  group &lsquo;shell&rsquo;</p>
+
+<p>  if [[ -p /dev/stdin ]]; then              # STDIN is attached to a pipe</p>
+
+<pre><code>pbcopy
+</code></pre>
+
+<p>  fi</p>
+
+<p>  if [[ ! -t 0 &amp;&amp; ! -p /dev/stdin ]]; then  # STDIN is attached to a redirect</p>
+
+<pre><code>pbcopy
+</code></pre>
+
+<p>  fi</p>
+
+<p>  if [[ -t 1 ]]; then                       # STDOUT is attached to a TTY</p>
+
+<pre><code>if [[ -t 0 ]]; then                     # STDIN is attached to TTY
+  pbpaste
+fi
+</code></pre>
+
+<p>  fi</p>
+
+<p>  if [[ -p /dev/stdout ]]; then             # STDOUT is attached to a pipe</p>
+
+<pre><code>pbpaste
+</code></pre>
+
+<p>  fi</p>
+
+<p>  if [[ ! -t 1 &amp;&amp; ! -p /dev/stdout ]]; then # STDOUT is attached to a redirection</p>
+
+<pre><code>pbpaste
+</code></pre>
+
+<p>  fi
+}
+```</p>
+
+<p>Credit to Dejay Clayton for his <a href="http://stackoverflow.com/a/30520299">very informative SO post</a> on the topic of <code>STDIN</code>, <code>STDOUT</code> and <code>STDERR</code> detection.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Colored Glasses for Less]]></title>
@@ -235,122 +355,6 @@ maintaining code of any real complexity.</p>
 <p>I care about readability in my shell code. If you&rsquo;re reading this, perhaps you do too. I wanted the best of both worlds, prompt <strong><em>and</em></strong> editor, so I wrote <a href="https://github.com/erichs/composure">composure, a set of opinionated shell functions that help you write shell functions</a>.</p>
 
 <p>In a future post, I&rsquo;ll highlight a few of the features and benefits of writing shell functions with composure, and a few unexpected use cases I&rsquo;ve found.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Servant of Two Masters]]></title>
-    <link href="http://erichs.github.io/blog/2014/07/08/servant-of-two-masters/"/>
-    <updated>2014-07-08T14:08:36-04:00</updated>
-    <id>http://erichs.github.io/blog/2014/07/08/servant-of-two-masters</id>
-    <content type="html"><![CDATA[<p><a href="/blog/2014/06/30/broken-windows-and-broken-code/" title="Broken Windows and Broken Code">Last time</a>, I brought up the subject of fixing shell commands as you go along, and suggested that the practice of doing so could be good for your programmatic health. Today I&rsquo;d like to highlight an underused Unix command that does this well, and talk through the broader implications of its use.</p>
-
-<!-- more -->
-
-
-<h2>The <code>fc</code> utility</h2>
-
-<p>First introduced via the Korn Shell, and a <a href="http://pubs.opengroup.org/onlinepubs/9699919799/utilities/fc.html">standard Unix utility</a> since at least the mid-90&rsquo;s, <code>fc</code> is short for &ldquo;fix command&rdquo;. Its purpose is to open up a previous command in the editor of your choice, and re-run the revised command once you are finished editing it.</p>
-
-<p>With no arguments, <code>fc</code> will open the most previous command in the editor for editing and re-evaluation. In pure shell terms, it is roughly equivalent to:</p>
-
-<p><code>bash I hope you'll agree, 'fc' is easier to type
-echo !! &gt; /tmp/cmd &amp;&amp; $EDITOR /tmp/cmd &amp;&amp; eval $(cat /tmp/cmd); rm /tmp/cmd
-</code></p>
-
-<p>Most implementations of <code>fc</code> will use an editor specified in the <code>FCEDIT</code> environment variable, followed by <code>EDITOR</code>, then <code>vi</code>, and finally <code>ed</code>. You could of course launch an external editor like Sublime Text or Eclipse, but I find that keeping the editor inside the terminal feels most natural for this purpose.</p>
-
-<p>I want to talk now about the experience of using a command like this. If you&rsquo;ve not used this utility before, go ahead and try it out a few times. Yes, right now. Seriously, I&rsquo;ll wait.</p>
-
-<hr />
-
-
-<center><div class="embed-video-container"><iframe src="http://www.youtube.com/embed/9hmDZz5pDOQ" allowfullscreen></iframe></div></center>
-
-
-<hr />
-
-
-<h2>Context Switching</h2>
-
-<p>So, kinda cool, but a little jarring, right? There you were happily plunking commands down at a prompt, and all of a sudden you&rsquo;re in your familiar editor, but perhaps in a slightly new context. Now you are editing your last command, say <code>ls -l</code>, as if it were a script:</p>
-
-<p>``` bash</p>
-
-<h1>!/bin/sh</h1>
-
-<p>ls -l
-```</p>
-
-<p>Furthermore, the act of saving and quitting ran the script, back at your terminal.</p>
-
-<h2>Two Environments, Two Adaptations</h2>
-
-<p>I think the feeling of slight disorientation that occurs when using <code>fc</code> for the first time stems from inherent tension between the two modes of operation, or execution environments of the shell interpreter: the shell is at once the familiar REPL prompt we use all the time, and the shell is also the interpreter of script files.</p>
-
-<h3>The Prompt</h3>
-
-<p>We naturally adapt our shell behaviors, as users, to these different execution environments: the interactive, REPL-nature of the prompt means that we can run a quick command, and immediately see the output displayed to the terminal. Based on that output, we might decide to try a different command altogether, consult a man page, or perhaps just hit the up arrow and make a quick revision to our command.</p>
-
-<p>In particular, using the shell prompt to build up complex command pipelines is invaluable: you get to see the output of each filter command:</p>
-
-<script type="text/javascript" src="https://asciinema.org/a/10680.js" id="asciicast-10680" async data-speed="2"></script>
-
-
-<p>At the prompt, this feels natural. You try a command, examine the output or result, add an appropriate filter command or commands until you have massaged the output into a desired format. You have the benefit of <strong>understandability</strong> as a <strong>writer</strong> of the command because the output of all the intermediate commands are available to you <strong>while</strong> you are writing.</p>
-
-<h3>The Script</h3>
-
-<p>Contrast that experience with encountering something like this in a script:</p>
-
-<p>```bash Readability matters</p>
-
-<h1>!/usr/bin/env bash</h1>
-
-<p> netstat -p tcp | grep -i established | awk &lsquo;{print $5}&rsquo; | awk -F'.&lsquo; &rsquo;{ $NF=&ldquo;&rdquo; } 1' | sed &rsquo;s/ /./g' | sed &rsquo;s/.$//&lsquo; | sort | uniq
-```</p>
-
-<p>The above is simply unintelligible. Even if you are a regex master and know the syntax for each of the above commands, you do not have the benefit of having written that command to begin with. The intent of all those pipeline filters is not communicated to the reader, and unless you actually played with that command, one step at a time, at the prompt, it is unlikely you would ever know what that command does.</p>
-
-<p><strong>Pipes, as a design feature, are central to the <a href="http://en.wikipedia.org/wiki/Unix_philosophy">Unix way</a></strong>. They are Unix&rsquo;s killer app. Unfortunately, they <strong>mask the intent</strong> of a command sequence. They are extremely convenient to use at a prompt, but end up being <em>write-only</em>.</p>
-
-<p>The maintainer of a script with the above command sequence in it would be well-advised to break that command into sections, or at least encapsulate the pipeline in a descriptive function, like:</p>
-
-<p>```bash Names give the reader a clue</p>
-
-<h1>!/usr/bin/env bash</h1>
-
-<p>function unique_remote_connected_hosts {
-  netstat -p tcp | grep -i established | awk &lsquo;{print $5}&rsquo; | awk -F'.&lsquo; &rsquo;{ $NF=&ldquo;&rdquo; } 1' | sed &rsquo;s/ /./g' | sed &rsquo;s/.$//&lsquo; | sort | uniq
-}</p>
-
-<p>unique_remote_connected_hosts
-```</p>
-
-<p>or perhaps:</p>
-
-<p>```bash Composition helps</p>
-
-<h1>!/usr/bin/env bash</h1>
-
-<p>function unique_remote_connected_hosts {
-  remote_connections | strip_port_number | sort | uniq
-}</p>
-
-<p>function remote_connections {
-  netstat -p tcp | grep -i established | awk &lsquo;{print $5}&rsquo;
-}</p>
-
-<p>function strip_port_number {
-  awk -F'.&lsquo; &rsquo;{ $NF=&ldquo;&rdquo; } 1' | sed &rsquo;s/ /./g' | sed &rsquo;s/.$//&lsquo;
-}</p>
-
-<p>unique_remote_connected_hosts
-```</p>
-
-<p>This functional composition is easy to do in a text editor, the natural habitat of a script. It is awkward and difficult to do at the prompt, which is too bad.</p>
-
-<p>More on resolving this fundamental tension, next time.</p>
 ]]></content>
   </entry>
   

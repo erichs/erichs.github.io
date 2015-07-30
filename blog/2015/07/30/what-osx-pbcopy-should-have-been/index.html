@@ -1,0 +1,366 @@
+
+<!DOCTYPE HTML>
+<html lang="zh-cn">
+<head>
+  <meta charset="UTF-8">
+  <title>What OSX `pbcopy` Should Have Been - Terminal Curiosity</title>
+
+  <meta name="author" content="Erich Smith">
+  
+  <meta name="description" content="What OSX `pbcopy` Should Have Been Jul 30th, 2015 I sometimes wish pbcopy and pbpaste were the same command, and the command
+just Did What I Mean. &hellip;">
+  
+  
+
+  <link rel="canonical" href="http://erichs.github.io/blog/2015/07/30/what-osx-pbcopy-should-have-been">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Terminal Curiosity" type="application/atom+xml">
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+  
+<body class="default">
+  <div id="wrapper">
+    <div id="header">
+  <h1><a href="/"><i class="fa fa-terminal fa-2x"></i> Terminal Curiosity</a></h1>
+  
+    <p>What does this prompt thingy do?</p>
+  
+</div>
+<ul id="social-links">
+  
+    <li><a class="feed" href="/atom.xml" title="RSS">RSS</a></li>
+  
+  
+  
+    <li> <a class="github" href="https://github.com/erichs" title="GitHub">GitHub</a> </li>
+  
+</ul>
+<div class="clear"></div>
+<ul id="nav">
+  
+    <li> <a href="/about">about</a> </li>
+  
+
+  
+    <li> <a href="/">blog</a> </li>
+  
+
+  
+    <li><a href="/blog/archives">archives</a></li>
+  
+
+  
+    <li><a href="/blog/categories">categories</a></li>
+  
+</ul>
+
+    <div id="main"> <div class="post-header">
+  
+    <h1 class="post-title">What OSX `pbcopy` Should Have Been</h1>
+  
+  
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-07-30T16:32:53-04:00" pubdate data-updated="true">Jul 30<sup>th</sup>, 2015</time>
+</div>
+
+
+<div class="post-content"><p>I sometimes wish <code>pbcopy</code> and <code>pbpaste</code> were the same command, and the command
+just Did What I Mean.</p>
+
+<p>Although <code>pbcopy</code> and <code>pbpaste</code> can be used to do more than simply copy text
+data into and out of the general system clipboard, in practice, I never use
+those features. In fact, I sometimes find it annoying that there wasn&rsquo;t just
+one tool provided that sensed if there was data on <code>STDIN</code>, and copied it to
+the clipboard, and sensed if <code>STDOUT</code> was attached to a pipe or redirect, and
+pasted from the clipboard. In fact, the more I thought about it, the more I
+thought it <em>should</em> do both.</p>
+
+<!-- more -->
+
+
+<p>This utility could probably be written in C or Go, but I couldn&rsquo;t think of any
+reasons I&rsquo;d want native speed for CLI-based clipboard manipulation, so I
+papered over the existing utilities with a bit of shell:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>pb<span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="o">[[</span> -p /dev/stdin <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>              <span class="c"># STDIN is attached to a pipe</span>
+</span><span class='line'>    pbcopy
+</span><span class='line'>  <span class="k">fi</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">  if</span> <span class="o">[[</span> ! -t 0 <span class="o">&amp;&amp;</span> ! -p /dev/stdin <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>  <span class="c"># STDIN is attached to a redirect</span>
+</span><span class='line'>    pbcopy
+</span><span class='line'>  <span class="k">fi</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">  if</span> <span class="o">[[</span> -t 1 <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>                       <span class="c"># STDOUT is attached to a TTY</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">[[</span> -t 0 <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>                     <span class="c"># STDIN is attached to TTY</span>
+</span><span class='line'>      pbpaste
+</span><span class='line'>    <span class="k">fi</span>
+</span><span class='line'><span class="k">  fi</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">  if</span> <span class="o">[[</span> -p /dev/stdout <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>             <span class="c"># STDOUT is attached to a pipe</span>
+</span><span class='line'>    pbpaste
+</span><span class='line'>  <span class="k">fi</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">  if</span> <span class="o">[[</span> ! -t 1 <span class="o">&amp;&amp;</span> ! -p /dev/stdout <span class="o">]]</span><span class="p">;</span> <span class="k">then</span> <span class="c"># STDOUT is attached to a redirection</span>
+</span><span class='line'>    pbpaste
+</span><span class='line'>  <span class="k">fi</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And here it is again with some <a href="https://github.com/erichs/composure">composure</a> metadata:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>pb<span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>  author <span class="s1">&#39;Erich Smith&#39;</span>
+</span><span class='line'>  about <span class="s1">&#39;clipboard DWIM tool&#39;</span>
+</span><span class='line'>  example <span class="s1">&#39;pb                    # paste&#39;</span>
+</span><span class='line'>  example <span class="s1">&#39;echo hi | pb          # copy&#39;</span>
+</span><span class='line'>  example <span class="s1">&#39;echo hi | pb | cat -  # copy and paste&#39;</span>
+</span><span class='line'>  example <span class="s1">&#39;pb &lt;/tmp/file         # copy&#39;</span>
+</span><span class='line'>  example <span class="s1">&#39;pb &gt;/tmp/file         # paste&#39;</span>
+</span><span class='line'>  example <span class="s1">&#39;pb &lt;/tmp/f1 &gt;/tmp/f2  # copy and paste&#39;</span>
+</span><span class='line'>  group <span class="s1">&#39;shell&#39;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="o">[[</span> -p /dev/stdin <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>              <span class="c"># STDIN is attached to a pipe</span>
+</span><span class='line'>    pbcopy
+</span><span class='line'>  <span class="k">fi</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">  if</span> <span class="o">[[</span> ! -t 0 <span class="o">&amp;&amp;</span> ! -p /dev/stdin <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>  <span class="c"># STDIN is attached to a redirect</span>
+</span><span class='line'>    pbcopy
+</span><span class='line'>  <span class="k">fi</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">  if</span> <span class="o">[[</span> -t 1 <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>                       <span class="c"># STDOUT is attached to a TTY</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">[[</span> -t 0 <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>                     <span class="c"># STDIN is attached to TTY</span>
+</span><span class='line'>      pbpaste
+</span><span class='line'>    <span class="k">fi</span>
+</span><span class='line'><span class="k">  fi</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">  if</span> <span class="o">[[</span> -p /dev/stdout <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>             <span class="c"># STDOUT is attached to a pipe</span>
+</span><span class='line'>    pbpaste
+</span><span class='line'>  <span class="k">fi</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">  if</span> <span class="o">[[</span> ! -t 1 <span class="o">&amp;&amp;</span> ! -p /dev/stdout <span class="o">]]</span><span class="p">;</span> <span class="k">then</span> <span class="c"># STDOUT is attached to a redirection</span>
+</span><span class='line'>    pbpaste
+</span><span class='line'>  <span class="k">fi</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Credit to Dejay Clayton for his <a href="http://stackoverflow.com/a/30520299">very informative SO post</a> on the topic of <code>STDIN</code>, <code>STDOUT</code> and <code>STDERR</code> detection.</p>
+</div>
+
+EOF
+
+
+
+<div class="post-single">
+  <div class="post-meta">
+    
+
+<span class="categories">
+  Categories:
+  
+    <a class='category' href='/blog/categories/composure/'>composure</a>, <a class='category' href='/blog/categories/shell/'>shell</a>
+  
+</span>
+
+
+    
+      <div class="sharing">
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+  </div>
+  <div class="clear"></div>
+
+  
+    <div id="comments">
+      <h2>Comments</h1>
+      <div id="disqus_thread" aria-live="polite"></div>
+    </div>
+  
+</div>
+ </div>
+    <div id="footer">
+  <div class="panels">
+    <div class="license">
+      <h2>LICENSE <i class="fa fa-certificate"></i></h2>
+      <p><a rel="license" href="http://creativecommons.org/licenses/by/4.0/">CC Attribution 4.0 International</a></p>
+    </div>
+
+    <div class="posts">
+      <h2>Recent Posts <i class="fa fa-file-text-o"></i></h2>
+      <ul>
+        
+          <li>
+            <a href="/blog/2015/07/30/what-osx-pbcopy-should-have-been/">What OSX `pbcopy` Should Have Been</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2014/08/22/colored-glasses-for-less/">Colored Glasses for Less</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2014/08/19/bundling-binary-blobs/">Bundling binary blobs</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2014/08/13/lightning-talk-at-triangle-dot-rb/">Lightning Talk at Triangle.rb!</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2014/08/06/compose-with-confidence/">Compose with Confidence</a>
+          </li>
+        
+      </ul>
+    </div>
+
+
+    <div class="douban">
+      <h2>Reading <i class="fa fa-book"></i></h2>
+      <style type="text/css" media="screen">
+        .gr_grid_container {
+          /* customize grid container div here. eg: width: 500px; */
+        }
+
+        .gr_grid_book_container {
+          /* customize book cover container div here */
+          float: left;
+          width: 39px;
+          height: 60px;
+          padding: 0px 0px;
+          overflow: hidden;
+        }
+      </style>
+      <div id="gr_grid_widget_1403791974">
+        <!-- Show static html as a placeholder in case js is not enabled - javascript include will override this if things work -->
+          <div class="gr_grid_container">
+    <div class="gr_grid_book_container"><a href="https://www.goodreads.com/book/show/1020277.Reality" title="Reality"><img alt="Reality" border="0" src="https://d.gr-assets.com/books/1363544014s/1020277.jpg" /></a></div>
+    <br style="clear: both"/><br/><a href="https://www.goodreads.com/user/show/10221727-erich-smith" class="gr_grid_branding" style="font-size: .9em; color: #382110; text-decoration: none; float: right; clear: both">Erich Smith's favorite books »</a>
+  <noscript><br/>Share <a href="/">book reviews</a> and ratings with Erich, and even join a <a href="/group">book club</a> on Goodreads.</noscript>
+  </div>
+
+      </div>
+      <script src="https://www.goodreads.com/review/grid_widget/10221727..?cover_size=small&hide_link=&hide_title=true&num_books=20&order=a&shelf=currently-reading&sort=date_added&widget_id=1403791974" type="text/javascript" charset="utf-8"></script>
+
+
+    </div>
+  </div>
+
+  <p class="powered">
+    Powered by <a href="http://octopress.org">Octopress</a> and <a href="https://github.com/iwinux/compbits">Compbits</a>
+  </p>
+</div>
+
+  </div> <!-- #wrapper end -->
+
+  
+
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'terminalcuriosity';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://erichs.github.io/blog/2015/07/30/what-osx-pbcopy-should-have-been/';
+        var disqus_url = 'http://erichs.github.io/blog/2015/07/30/what-osx-pbcopy-should-have-been/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+  
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+  
+
+  
+
+</body>
+</html>
