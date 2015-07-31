@@ -135,7 +135,7 @@ papered over the existing utilities with a bit of shell:</p>
 </span><span class='line'>    pbpaste
 </span><span class='line'>  <span class="k">fi</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">  if</span> <span class="o">[[</span> ! -t 1 <span class="o">&amp;&amp;</span> ! -p /dev/stdout <span class="o">]]</span><span class="p">;</span> <span class="k">then</span> <span class="c"># STDOUT is attached to a redirection</span>
+</span><span class='line'><span class="k">  if</span> <span class="o">[[</span> ! -t 1 <span class="o">&amp;&amp;</span> ! -p /dev/stdout <span class="o">]]</span><span class="p">;</span> <span class="k">then</span> <span class="c"># STDOUT is attached to a redirect</span>
 </span><span class='line'>    pbpaste
 </span><span class='line'>  <span class="k">fi</span>
 </span><span class='line'><span class="o">}</span>
@@ -206,7 +206,7 @@ papered over the existing utilities with a bit of shell:</p>
 </span><span class='line'>    pbpaste
 </span><span class='line'>  <span class="k">fi</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">  if</span> <span class="o">[[</span> ! -t 1 <span class="o">&amp;&amp;</span> ! -p /dev/stdout <span class="o">]]</span><span class="p">;</span> <span class="k">then</span> <span class="c"># STDOUT is attached to a redirection</span>
+</span><span class='line'><span class="k">  if</span> <span class="o">[[</span> ! -t 1 <span class="o">&amp;&amp;</span> ! -p /dev/stdout <span class="o">]]</span><span class="p">;</span> <span class="k">then</span> <span class="c"># STDOUT is attached to a redirect</span>
 </span><span class='line'>    pbpaste
 </span><span class='line'>  <span class="k">fi</span>
 </span><span class='line'><span class="o">}</span>

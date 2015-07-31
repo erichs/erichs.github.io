@@ -4,7 +4,7 @@
   <title><![CDATA[Category: composure | Terminal Curiosity]]></title>
   <link href="http://erichs.github.io/blog/categories/composure/atom.xml" rel="self"/>
   <link href="http://erichs.github.io/"/>
-  <updated>2015-07-30T21:30:57-04:00</updated>
+  <updated>2015-07-30T21:36:46-04:00</updated>
   <id>http://erichs.github.io/</id>
   <author>
     <name><![CDATA[Erich Smith]]></name>
@@ -68,7 +68,7 @@ fi
 
 <p>  fi</p>
 
-<p>  if [[ ! -t 1 &amp;&amp; ! -p /dev/stdout ]]; then # STDOUT is attached to a redirection</p>
+<p>  if [[ ! -t 1 &amp;&amp; ! -p /dev/stdout ]]; then # STDOUT is attached to a redirect</p>
 
 <pre><code>pbpaste
 </code></pre>
@@ -120,7 +120,7 @@ fi
 
 <p>  fi</p>
 
-<p>  if [[ ! -t 1 &amp;&amp; ! -p /dev/stdout ]]; then # STDOUT is attached to a redirection</p>
+<p>  if [[ ! -t 1 &amp;&amp; ! -p /dev/stdout ]]; then # STDOUT is attached to a redirect</p>
 
 <pre><code>pbpaste
 </code></pre>
