@@ -42,7 +42,7 @@ pb() {
     pbpaste
   fi
 
-  if [[ ! -t 1 && ! -p /dev/stdout ]]; then # STDOUT is attached to a redirection
+  if [[ ! -t 1 && ! -p /dev/stdout ]]; then # STDOUT is attached to a redirect
     pbpaste
   fi
 }
@@ -79,7 +79,7 @@ pb() {
     pbpaste
   fi
 
-  if [[ ! -t 1 && ! -p /dev/stdout ]]; then # STDOUT is attached to a redirection
+  if [[ ! -t 1 && ! -p /dev/stdout ]]; then # STDOUT is attached to a redirect
     pbpaste
   fi
 }
