@@ -12,9 +12,9 @@ Although `pbcopy` and `pbpaste` can be used to do more than simply copy text
 data into and out of the general system clipboard, in practice, I never use
 those features. In fact, I sometimes find it annoying that there wasn't just
 one tool provided that sensed if there was data on `STDIN`, and copied it to
-the clipboard, and sensed if `STDOUT` was attached to a pipe or redirect, and
-pasted from the clipboard. In fact, the more I thought about it, the more I
-thought it *should* do both.
+the clipboard, and pasted data appropriately from the clipboard on `STDOUT`.
+
+In fact, the more I thought about it, the more I thought it *should* do both.
 
 <!-- more -->
 
