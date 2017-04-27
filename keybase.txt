@@ -1,0 +1,54 @@
+==================================================================
+https://keybase.io/erichs
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://erichs.github.io
+  * I am erichs (https://keybase.io/erichs) on keybase.
+  * I have a public key ASD7bVk1MIBkPp3K-KF-FK6dgZdlUuttOy3yyqHEPJNuego
+
+To do so, I am signing this object:
+
+{
+    "body": {
+        "key": {
+            "eldest_kid": "01010feba93b112f2511fa7014800473901795e7dedcd44e9634a50e734ac8fea9890a",
+            "host": "keybase.io",
+            "kid": "0120fb6d59353080643e9dcaf8a17e14ae9d81976552eb6d3b2df2caa1c43c936e7a0a",
+            "uid": "9905f300e3df0b5d2571e667e810aa19",
+            "username": "erichs"
+        },
+        "service": {
+            "hostname": "erichs.github.io",
+            "protocol": "https:"
+        },
+        "type": "web_service_binding",
+        "version": 1
+    },
+    "client": {
+        "name": "keybase.io go client",
+        "version": "1.0.21"
+    },
+    "ctime": 1493314045,
+    "expire_in": 504576000,
+    "merkle_root": {
+        "ctime": 1493314009,
+        "hash": "7584b5336f3c780cc74eec2d59c3e0406b3189c162b8be381cc6e5091e1afd4acbb6ee82ae7d260b3892019780faad7cbcf94926f1b4ea9890b88b409671cb1c",
+        "seqno": 1041973
+    },
+    "prev": "8f324862adfb2c487eeba9317f53f618be9e8ffd1e7602958d0bf7d319227afa",
+    "seqno": 11,
+    "tag": "signature"
+}
+
+which yields the signature:
+
+hKRib2R5hqhkZXRhY2hlZMOpaGFzaF90eXBlCqNrZXnEIwEg+21ZNTCAZD6dyvihfhSunYGXZVLrbTst8sqhxDyTbnoKp3BheWxvYWTFAvh7ImJvZHkiOnsia2V5Ijp7ImVsZGVzdF9raWQiOiIwMTAxMGZlYmE5M2IxMTJmMjUxMWZhNzAxNDgwMDQ3MzkwMTc5NWU3ZGVkY2Q0NGU5NjM0YTUwZTczNGFjOGZlYTk4OTBhIiwiaG9zdCI6ImtleWJhc2UuaW8iLCJraWQiOiIwMTIwZmI2ZDU5MzUzMDgwNjQzZTlkY2FmOGExN2UxNGFlOWQ4MTk3NjU1MmViNmQzYjJkZjJjYWExYzQzYzkzNmU3YTBhIiwidWlkIjoiOTkwNWYzMDBlM2RmMGI1ZDI1NzFlNjY3ZTgxMGFhMTkiLCJ1c2VybmFtZSI6ImVyaWNocyJ9LCJzZXJ2aWNlIjp7Imhvc3RuYW1lIjoiZXJpY2hzLmdpdGh1Yi5pbyIsInByb3RvY29sIjoiaHR0cHM6In0sInR5cGUiOiJ3ZWJfc2VydmljZV9iaW5kaW5nIiwidmVyc2lvbiI6MX0sImNsaWVudCI6eyJuYW1lIjoia2V5YmFzZS5pbyBnbyBjbGllbnQiLCJ2ZXJzaW9uIjoiMS4wLjIxIn0sImN0aW1lIjoxNDkzMzE0MDQ1LCJleHBpcmVfaW4iOjUwNDU3NjAwMCwibWVya2xlX3Jvb3QiOnsiY3RpbWUiOjE0OTMzMTQwMDksImhhc2giOiI3NTg0YjUzMzZmM2M3ODBjYzc0ZWVjMmQ1OWMzZTA0MDZiMzE4OWMxNjJiOGJlMzgxY2M2ZTUwOTFlMWFmZDRhY2JiNmVlODJhZTdkMjYwYjM4OTIwMTk3ODBmYWFkN2NiY2Y5NDkyNmYxYjRlYTk4OTBiODhiNDA5NjcxY2IxYyIsInNlcW5vIjoxMDQxOTczfSwicHJldiI6IjhmMzI0ODYyYWRmYjJjNDg3ZWViYTkzMTdmNTNmNjE4YmU5ZThmZmQxZTc2MDI5NThkMGJmN2QzMTkyMjdhZmEiLCJzZXFubyI6MTEsInRhZyI6InNpZ25hdHVyZSJ9o3NpZ8RAX8cE4xLgzQY2nEfsdGOiBcN3/qq7wqRS2oEWKcDoWkdi4/M9boIgKtvcnYVKgITbEe2ysXpkajKR67aU8FpqD6hzaWdfdHlwZSCkaGFzaIKkdHlwZQildmFsdWXEIBBgQ9gly2Dy/kDp0V2HnBfVEBIV0y9jOpKTMybKe2obo3RhZ80CAqd2ZXJzaW9uAQ==
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/erichs
+
+==================================================================
