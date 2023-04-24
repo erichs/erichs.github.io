@@ -85,7 +85,7 @@
           // Fetch up to 200 features in one big fetch.
 	  const opts = {per_page: 200, fields: 'reference_num,name,description,requirements'};
           api.get("/products/" + productKey + "/ideas", {}, function(response) {
-            $("#feature-template").tmpl(response.features).appendTo("#features");
+            $("#feature-template").tmpl(response.ideas).appendTo("#features");
           });
         });
         return false;
