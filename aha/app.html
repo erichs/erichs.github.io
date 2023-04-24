@@ -45,6 +45,7 @@
   </head>
 
   <body class="container">
+    v1.1<br/>
     <form id="controls">
       <input type="text" placeholder="Aha! subdomain" id="subdomain">
       <input type="text" placeholder="Product key" id="product-key">
@@ -82,7 +83,7 @@
           $("#controls").remove();
           
           // Fetch up to 200 features in one big fetch.
-          api.get("/products/" + productKey + "/features", {per_page: 200, fields: 'reference_num,name,description,requirements'}, function(response) {
+          api.get("/products/" + productKey + "/ideas", {per_page: 200, fields: 'reference_num,name,description,requirements'}, function(response) {
             $("#feature-template").tmpl(response.features).appendTo("#features");
           });
         });
